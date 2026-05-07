@@ -1,7 +1,7 @@
 {
   "name": "markwright",
-  "version": "0.1.0",
-  "description": "A themed markdown editor with live WYSIWYG and fully-designed visual themes.",
+  "version": "0.1.1",
+  "description": "Markwright — themed markdown editor",
   "main": "out/main/index.js",
   "author": "Matthew Mask",
   "license": "MIT",
