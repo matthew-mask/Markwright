@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge, ipcRenderer, webUtils } from 'electron';
 import { IPC, type Settings, type ThemeManifest, type LoadedFile, type UpdateInfo } from '../shared/ipc';
 
 const api = {
@@ -23,7 +23,11 @@ const api = {
   onUpdateDownloaded: (cb: (info: UpdateInfo) => void) => {
     ipcRenderer.on('update:downloaded', (_e, info: UpdateInfo) => cb(info));
   },
-  installUpdate: () => ipcRenderer.invoke(IPC.updateInstall)
+  installUpdate: () => ipcRenderer.invoke(IPC.updateInstall),
+
+  // Resolve the absolute path of a File object dropped onto the window.
+  // Electron 32+ removed File.path for security; webUtils.getPathForFile is the replacement.
+  getDroppedFilePath: (file: File): string => webUtils.getPathForFile(file)
 };
 
 contextBridge.exposeInMainWorld('markwright', api);

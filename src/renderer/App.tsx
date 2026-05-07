@@ -110,6 +110,40 @@ export default function App(): JSX.Element {
     }
   }, []);
 
+  // Drag-and-drop a .md file onto the window to open it.
+  useEffect(() => {
+    const onDragOver = (e: DragEvent) => {
+      if (e.dataTransfer?.types.includes('Files')) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+      }
+    };
+    const onDrop = async (e: DragEvent) => {
+      const files = e.dataTransfer?.files;
+      if (!files || files.length === 0) return;
+      e.preventDefault();
+      const file = files[0];
+      if (!/\.(md|markdown)$/i.test(file.name)) return;
+      const filePath = window.markwright.getDroppedFilePath(file);
+      if (!filePath) return;
+      const loaded = await window.markwright.loadByPath(filePath);
+      if (loaded) {
+        setDoc({
+          filePath: loaded.path,
+          initialContent: loaded.content,
+          dirty: false,
+          liveContent: loaded.content
+        });
+      }
+    };
+    window.addEventListener('dragover', onDragOver);
+    window.addEventListener('drop', onDrop);
+    return () => {
+      window.removeEventListener('dragover', onDragOver);
+      window.removeEventListener('drop', onDrop);
+    };
+  }, []);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const mod = e.ctrlKey || e.metaKey;
