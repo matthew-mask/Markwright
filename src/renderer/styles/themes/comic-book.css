@@ -1,0 +1,203 @@
+/* === Comic Book === */
+[data-theme="comic-book"] {
+  --mw-font-body: 'Inter', system-ui, sans-serif;
+  --mw-font-display: 'Bangers', 'Anton', 'Impact', sans-serif;
+  --mw-font-ui: 'Bangers', sans-serif;
+  --mw-font-mono: 'JetBrains Mono', monospace;
+
+  --mw-bg: #fff8e0;
+  --mw-fg: #0a0a0a;
+  --mw-fg-strong: #000;
+  --mw-fg-muted: rgba(0, 0, 0, 0.65);
+
+  --mw-accent: #d62828;
+  --mw-accent-fg: #fff8e0;
+
+  --mw-link: #0066cc;
+  --mw-link-decoration: underline;
+
+  --mw-line-height: 1.6;
+  --mw-body-size: 17px;
+
+  --mw-heading-weight: 400;
+  --mw-heading-tracking: 0.04em;
+
+  --mw-titlebar-bg: #fff8e0;
+  --mw-titlebar-border: 4px solid #000;
+
+  --mw-btn-bg: #fff;
+  --mw-btn-bg-hover: #ffd60a;
+  --mw-btn-border: 3px solid #000;
+  --mw-btn-radius: 999px;
+
+  --mw-code-bg: #fff;
+  --mw-codeblock-bg: #fff;
+  --mw-codeblock-border: 3px solid #000;
+  --mw-codeblock-radius: 6px;
+
+  --mw-quote-border: 0;
+  --mw-quote-bg: #fff;
+  --mw-quote-fg: #000;
+  --mw-quote-style: normal;
+
+  --mw-rule: #000;
+  --mw-selection: #ffd60a;
+  --mw-table-border: 3px solid #000;
+  --mw-table-head-bg: #ffd60a;
+
+  --mw-modal-bg: #fff8e0;
+  --mw-modal-border: 4px solid #000;
+  --mw-modal-radius: 12px;
+  --mw-modal-backdrop: rgba(0, 0, 0, 0.6);
+
+  --mw-decoration-opacity: 0.4;
+  --mw-content-overlay: linear-gradient(180deg, rgba(255, 248, 224, 0.4), rgba(255, 248, 224, 0.55));
+}
+
+/* Halftone Ben-Day dot pattern */
+[data-theme="comic-book"] .mw-bg-decoration {
+  display: block;
+  background-image:
+    radial-gradient(circle, rgba(214, 40, 40, 0.5) 1.2px, transparent 1.6px),
+    radial-gradient(circle, rgba(0, 102, 204, 0.4) 1px, transparent 1.4px);
+  background-size: 12px 12px, 12px 12px;
+  background-position: 0 0, 6px 6px;
+}
+
+[data-theme="comic-book"] .mw-titlebar .mw-brand {
+  font-family: 'Bangers', sans-serif;
+  font-size: 24px;
+  letter-spacing: 0.06em;
+  color: #d62828;
+  -webkit-text-stroke: 1.5px #000;
+  text-stroke: 1.5px #000;
+}
+
+[data-theme="comic-book"] .mw-btn {
+  font-family: 'Bangers', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 4px 4px 0 #000;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+[data-theme="comic-book"] .mw-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 #000;
+}
+[data-theme="comic-book"] .mw-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #000;
+}
+[data-theme="comic-book"] .mw-btn-accent {
+  background: #d62828;
+  color: #fff;
+  border-color: #000;
+}
+
+/* KAPOW headings — outlined display type with shadow offset */
+[data-theme="comic-book"] .ProseMirror h1 {
+  font-family: 'Bangers', sans-serif;
+  font-size: 3.4em;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: #ffd60a;
+  -webkit-text-stroke: 2px #000;
+  text-shadow: 4px 4px 0 #d62828, 8px 8px 0 #000;
+  line-height: 1;
+  transform: rotate(-1.5deg);
+  transform-origin: left center;
+  display: inline-block;
+}
+
+[data-theme="comic-book"] .ProseMirror h2 {
+  font-family: 'Bangers', sans-serif;
+  font-size: 2.2em;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: #0066cc;
+  -webkit-text-stroke: 1.5px #000;
+  text-shadow: 3px 3px 0 #000;
+}
+
+[data-theme="comic-book"] .ProseMirror h3 {
+  font-family: 'Bangers', sans-serif;
+  font-size: 1.6em;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: #000;
+}
+
+[data-theme="comic-book"] .ProseMirror strong {
+  background: #ffd60a;
+  padding: 0 4px;
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0 #000;
+  display: inline-block;
+}
+
+/* Speech-bubble blockquote */
+[data-theme="comic-book"] .ProseMirror blockquote {
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 28px 28px 28px 4px;
+  padding: 1em 1.4em;
+  margin: 1.6em 1em 2.2em 0.5em;
+  box-shadow: 5px 5px 0 #000;
+  position: relative;
+  font-style: normal;
+  font-weight: 500;
+}
+[data-theme="comic-book"] .ProseMirror blockquote::after {
+  content: '';
+  position: absolute;
+  left: 18px;
+  bottom: -22px;
+  border: 12px solid transparent;
+  border-top-color: #000;
+  border-right-width: 0;
+}
+[data-theme="comic-book"] .ProseMirror blockquote::before {
+  content: '';
+  position: absolute;
+  left: 22px;
+  bottom: -16px;
+  border: 9px solid transparent;
+  border-top-color: #fff;
+  border-right-width: 0;
+  z-index: 1;
+}
+
+[data-theme="comic-book"] .ProseMirror hr {
+  height: 0;
+  background: transparent;
+  border-top: 4px solid #000;
+  box-shadow: 0 4px 0 -1px #ffd60a;
+}
+
+[data-theme="comic-book"] .ProseMirror table th {
+  font-family: 'Bangers', sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.mw-theme-preview[data-theme="comic-book"] {
+  background-color: #fff8e0;
+  background-image:
+    radial-gradient(circle, rgba(214, 40, 40, 0.6) 1.2px, transparent 1.6px),
+    radial-gradient(circle, rgba(0, 102, 204, 0.5) 1px, transparent 1.4px);
+  background-size: 8px 8px, 8px 8px;
+  background-position: 0 0, 4px 4px;
+  color: #000;
+  font-family: 'Bangers', sans-serif;
+}
+.mw-theme-preview[data-theme="comic-book"] .mw-theme-preview-h1 {
+  font-family: 'Bangers', sans-serif;
+  color: #ffd60a;
+  -webkit-text-stroke: 1.5px #000;
+  text-shadow: 2px 2px 0 #d62828;
+  font-size: 28px;
+  letter-spacing: 0.04em;
+  transform: rotate(-2deg);
+  display: inline-block;
+}

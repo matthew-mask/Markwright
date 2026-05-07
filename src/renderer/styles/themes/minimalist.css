@@ -1,0 +1,60 @@
+/* === Minimalist === */
+[data-theme="minimalist"] {
+  --mw-font-body: 'Inter', system-ui, sans-serif;
+  --mw-font-display: 'Inter', system-ui, sans-serif;
+  --mw-font-ui: 'Inter', system-ui, sans-serif;
+  --mw-font-mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+
+  --mw-bg: #fafaf7;
+  --mw-fg: #1a1a1a;
+  --mw-fg-strong: #000;
+  --mw-fg-muted: rgba(0, 0, 0, 0.55);
+
+  --mw-accent: #1a1a1a;
+  --mw-accent-fg: #fafaf7;
+
+  --mw-link: #1a1a1a;
+  --mw-link-decoration: underline;
+
+  --mw-line-height: 1.75;
+  --mw-body-size: 17px;
+
+  --mw-heading-weight: 600;
+  --mw-heading-tracking: -0.02em;
+
+  --mw-titlebar-bg: rgba(250, 250, 247, 0.85);
+  --mw-titlebar-border: 1px solid rgba(0, 0, 0, 0.06);
+
+  --mw-btn-bg: transparent;
+  --mw-btn-bg-hover: rgba(0, 0, 0, 0.05);
+  --mw-btn-border: 1px solid rgba(0, 0, 0, 0.1);
+  --mw-btn-radius: 6px;
+
+  --mw-code-bg: rgba(0, 0, 0, 0.05);
+  --mw-codeblock-bg: #f3f3ee;
+  --mw-codeblock-radius: 6px;
+
+  --mw-quote-border: 2px solid rgba(0, 0, 0, 0.2);
+  --mw-quote-style: normal;
+  --mw-quote-fg: rgba(0, 0, 0, 0.65);
+
+  --mw-rule: rgba(0, 0, 0, 0.1);
+  --mw-selection: rgba(0, 0, 0, 0.12);
+  --mw-table-border: 1px solid rgba(0, 0, 0, 0.1);
+  --mw-table-head-bg: transparent;
+  --mw-modal-bg: #fafaf7;
+}
+
+[data-theme="minimalist"] .mw-bg-decoration { display: none; }
+
+[data-theme="minimalist"] .ProseMirror h1 {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 0.3em;
+}
+
+/* Theme preview tile */
+.mw-theme-preview[data-theme="minimalist"] {
+  background: #fafaf7;
+  color: #1a1a1a;
+  font-family: 'Inter', sans-serif;
+}

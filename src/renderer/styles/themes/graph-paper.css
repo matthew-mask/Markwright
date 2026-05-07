@@ -1,0 +1,102 @@
+/* === Pen & Graph Paper === */
+[data-theme="graph-paper"] {
+  --mw-font-body: 'Caveat', 'Special Elite', cursive;
+  --mw-font-display: 'Caveat', cursive;
+  --mw-font-ui: 'Special Elite', 'Caveat', monospace;
+  --mw-font-mono: 'Special Elite', 'IBM Plex Mono', monospace;
+
+  --mw-bg: #f3efe1;
+  --mw-fg: #1f3a5f;
+  --mw-fg-strong: #102a4d;
+  --mw-fg-muted: rgba(31, 58, 95, 0.6);
+
+  --mw-accent: #c43c2a;
+  --mw-accent-fg: #fffaf0;
+
+  --mw-link: #c43c2a;
+  --mw-link-decoration: underline wavy;
+
+  --mw-line-height: 1.6;
+  --mw-body-size: 22px;
+
+  --mw-heading-weight: 700;
+  --mw-heading-tracking: 0;
+
+  --mw-titlebar-bg: rgba(243, 239, 225, 0.85);
+  --mw-titlebar-border: 2px dashed rgba(31, 58, 95, 0.25);
+
+  --mw-btn-bg: rgba(255, 250, 240, 0.6);
+  --mw-btn-bg-hover: rgba(196, 60, 42, 0.1);
+  --mw-btn-border: 1.5px solid rgba(31, 58, 95, 0.5);
+  --mw-btn-radius: 3px;
+
+  --mw-code-bg: rgba(31, 58, 95, 0.08);
+  --mw-codeblock-bg: rgba(255, 250, 240, 0.7);
+  --mw-codeblock-border: 2px dashed rgba(31, 58, 95, 0.3);
+  --mw-codeblock-radius: 4px;
+
+  --mw-quote-border: 4px solid #c43c2a;
+  --mw-quote-style: normal;
+  --mw-quote-bg: rgba(196, 60, 42, 0.05);
+  --mw-quote-fg: #1f3a5f;
+
+  --mw-rule: rgba(31, 58, 95, 0.3);
+  --mw-selection: rgba(196, 60, 42, 0.2);
+  --mw-table-border: 1.5px solid rgba(31, 58, 95, 0.5);
+  --mw-table-head-bg: rgba(31, 58, 95, 0.08);
+  --mw-modal-bg: #f3efe1;
+  --mw-modal-border: 2px dashed rgba(31, 58, 95, 0.4);
+  --mw-modal-radius: 4px;
+
+  --mw-decoration-opacity: 0.5;
+  --mw-content-overlay: linear-gradient(180deg, rgba(243, 239, 225, 0.35), rgba(243, 239, 225, 0.45));
+}
+
+[data-theme="graph-paper"] .mw-bg-decoration {
+  background-image:
+    linear-gradient(rgba(31, 58, 95, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 58, 95, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: -1px -1px;
+  display: block;
+}
+
+[data-theme="graph-paper"] .ProseMirror h1,
+[data-theme="graph-paper"] .ProseMirror h2 {
+  text-decoration: underline;
+  text-decoration-color: rgba(196, 60, 42, 0.6);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+[data-theme="graph-paper"] .ProseMirror h1 { font-size: 2.6em; }
+
+[data-theme="graph-paper"] .ProseMirror strong {
+  background: linear-gradient(transparent 60%, rgba(245, 222, 80, 0.55) 60%);
+  padding: 0 2px;
+}
+
+[data-theme="graph-paper"] .mw-brand,
+[data-theme="graph-paper"] .mw-filename {
+  font-family: 'Caveat', cursive;
+  font-size: 18px;
+}
+
+[data-theme="graph-paper"] .ProseMirror blockquote {
+  border-left-style: solid;
+  font-family: 'Caveat', cursive;
+  font-size: 1.1em;
+}
+
+.mw-theme-preview[data-theme="graph-paper"] {
+  background: #f3efe1;
+  background-image:
+    linear-gradient(rgba(31, 58, 95, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 58, 95, 0.12) 1px, transparent 1px);
+  background-size: 14px 14px;
+  color: #1f3a5f;
+  font-family: 'Caveat', cursive;
+}
+
+.mw-theme-preview[data-theme="graph-paper"] .mw-theme-preview-h1 { font-size: 36px; color: #c43c2a; }
+.mw-theme-preview[data-theme="graph-paper"] .mw-theme-preview-line { background: #1f3a5f; }

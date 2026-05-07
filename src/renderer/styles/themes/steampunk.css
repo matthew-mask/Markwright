@@ -1,0 +1,210 @@
+/* === Steampunk ===
+   Aged paper, brass cogs, vintage typewriter ink. */
+[data-theme="steampunk"] {
+  --mw-font-body: 'Special Elite', 'IM Fell DW Pica', serif;
+  --mw-font-display: 'IM Fell DW Pica', 'Cinzel', serif;
+  --mw-font-ui: 'IM Fell DW Pica', serif;
+  --mw-font-mono: 'Special Elite', 'IBM Plex Mono', monospace;
+
+  --mw-bg: #e8d5a8;
+  --mw-fg: #2d1e10;
+  --mw-fg-strong: #1a0f06;
+  --mw-fg-muted: rgba(45, 30, 16, 0.65);
+
+  --mw-accent: #8b4513;
+  --mw-accent-fg: #e8d5a8;
+
+  /* Brass + copper accents */
+  --mw-link: #8b4513;
+  --mw-link-decoration: underline;
+
+  --mw-line-height: 1.7;
+  --mw-body-size: 18px;
+
+  --mw-heading-weight: 700;
+  --mw-heading-tracking: 0.04em;
+
+  --mw-titlebar-bg: rgba(232, 213, 168, 0.92);
+  --mw-titlebar-border: 2px solid #8b4513;
+
+  --mw-btn-bg: rgba(192, 138, 62, 0.18);
+  --mw-btn-bg-hover: rgba(192, 138, 62, 0.32);
+  --mw-btn-border: 2px solid #8b4513;
+  --mw-btn-radius: 999px;
+
+  --mw-code-bg: rgba(45, 30, 16, 0.08);
+  --mw-codeblock-bg: rgba(232, 213, 168, 0.5);
+  --mw-codeblock-border: 2px solid #8b4513;
+  --mw-codeblock-radius: 4px;
+
+  --mw-quote-border: 0;
+  --mw-quote-bg: rgba(192, 138, 62, 0.1);
+  --mw-quote-fg: #2d1e10;
+  --mw-quote-style: italic;
+  --mw-quote-padding: 0.8em 1.6em;
+
+  --mw-rule: transparent;
+  --mw-selection: rgba(139, 69, 19, 0.25);
+  --mw-table-border: 1.5px solid #8b4513;
+  --mw-table-head-bg: rgba(192, 138, 62, 0.25);
+
+  --mw-modal-bg: #e8d5a8;
+  --mw-modal-border: 3px double #8b4513;
+  --mw-modal-radius: 4px;
+
+  --mw-decoration-opacity: 0.6;
+  --mw-content-overlay: linear-gradient(180deg, rgba(232, 213, 168, 0.35), rgba(232, 213, 168, 0.5));
+}
+
+/* Aged paper texture + faint cog SVG corner ornaments */
+[data-theme="steampunk"] .mw-bg-decoration {
+  display: block;
+  background-color: transparent;
+  background-image:
+    radial-gradient(circle at 25% 20%, rgba(139, 69, 19, 0.18), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(139, 69, 19, 0.14), transparent 55%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence baseFrequency='0.78' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.34 0 0 0 0 0.21 0 0 0 0 0.08 0 0 0 0.16 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* A subtle gear silhouette at top-right corner */
+[data-theme="steampunk"] .mw-bg-decoration::before {
+  content: '';
+  position: absolute;
+  top: 60px; right: 5%;
+  width: 220px; height: 220px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='none' stroke='%238b4513' stroke-width='1.4' opacity='0.45'><circle cx='50' cy='50' r='28'/><circle cx='50' cy='50' r='8'/><g><rect x='48' y='6' width='4' height='10'/><rect x='48' y='84' width='4' height='10'/><rect x='6' y='48' width='10' height='4'/><rect x='84' y='48' width='10' height='4'/><rect x='17' y='17' width='8' height='4' transform='rotate(45 21 19)'/><rect x='75' y='75' width='8' height='4' transform='rotate(45 79 77)'/><rect x='75' y='17' width='8' height='4' transform='rotate(-45 79 19)'/><rect x='17' y='75' width='8' height='4' transform='rotate(-45 21 77)'/></g></g></svg>") center / contain no-repeat;
+  pointer-events: none;
+}
+[data-theme="steampunk"] .mw-bg-decoration::after {
+  content: '';
+  position: absolute;
+  bottom: 8%; left: 6%;
+  width: 160px; height: 160px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='none' stroke='%238b4513' stroke-width='1.6' opacity='0.4'><circle cx='50' cy='50' r='22'/><circle cx='50' cy='50' r='6'/><g><rect x='48' y='14' width='4' height='8'/><rect x='48' y='78' width='4' height='8'/><rect x='14' y='48' width='8' height='4'/><rect x='78' y='48' width='8' height='4'/></g></g></svg>") center / contain no-repeat;
+  pointer-events: none;
+}
+
+[data-theme="steampunk"] .mw-titlebar .mw-brand {
+  font-family: 'IM Fell DW Pica', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 19px;
+  color: #8b4513;
+  letter-spacing: 0.03em;
+}
+[data-theme="steampunk"] .mw-titlebar .mw-filename {
+  font-family: 'Special Elite', monospace;
+}
+
+[data-theme="steampunk"] .mw-btn {
+  font-family: 'IM Fell DW Pica', serif;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  color: #2d1e10;
+}
+[data-theme="steampunk"] .mw-btn-accent {
+  background: linear-gradient(135deg, #c08a3e, #8b4513);
+  color: #f5e7c2;
+  border-color: #8b4513;
+  box-shadow: inset 0 0 0 1px rgba(245, 231, 194, 0.3);
+}
+
+[data-theme="steampunk"] .ProseMirror h1 {
+  font-family: 'IM Fell DW Pica', serif;
+  font-style: italic;
+  font-size: 2.6em;
+  font-weight: 700;
+  text-align: center;
+  color: #8b4513;
+  margin-bottom: 0.3em;
+  position: relative;
+}
+[data-theme="steampunk"] .ProseMirror h1::before,
+[data-theme="steampunk"] .ProseMirror h1::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #8b4513 30%, #c08a3e 50%, #8b4513 70%, transparent);
+  margin: 0.4em auto;
+  width: 70%;
+}
+
+[data-theme="steampunk"] .ProseMirror h2 {
+  font-family: 'IM Fell DW Pica', serif;
+  font-style: italic;
+  font-size: 1.7em;
+  color: #2d1e10;
+  border-bottom: 1.5px solid #8b4513;
+  padding-bottom: 0.2em;
+}
+[data-theme="steampunk"] .ProseMirror h2::after {
+  content: ' \2699';
+  color: #8b4513;
+  font-style: normal;
+}
+
+[data-theme="steampunk"] .ProseMirror h3 {
+  font-family: 'IM Fell DW Pica', serif;
+  font-style: italic;
+  color: #8b4513;
+}
+
+[data-theme="steampunk"] .ProseMirror strong {
+  color: #8b4513;
+  font-weight: 700;
+}
+
+[data-theme="steampunk"] .ProseMirror blockquote {
+  border-left: 0;
+  border-radius: 4px;
+  position: relative;
+  font-family: 'IM Fell DW Pica', serif;
+  font-size: 1.05em;
+}
+
+/* HR: ornamental brass rule with center cog */
+[data-theme="steampunk"] .ProseMirror hr {
+  border: 0;
+  height: 1.4em;
+  background: linear-gradient(90deg, transparent 0, rgba(139, 69, 19, 0.6) 25%, #c08a3e 50%, rgba(139, 69, 19, 0.6) 75%, transparent 100%);
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  position: relative;
+  margin: 2em 0;
+}
+[data-theme="steampunk"] .ProseMirror hr::after {
+  content: '\2699';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -55%);
+  color: #8b4513;
+  background: #e8d5a8;
+  padding: 0 0.5em;
+  font-size: 1.3em;
+}
+
+[data-theme="steampunk"] .ProseMirror table th {
+  font-family: 'IM Fell DW Pica', serif;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  color: #2d1e10;
+}
+
+.mw-theme-preview[data-theme="steampunk"] {
+  background-color: #e8d5a8;
+  background-image:
+    radial-gradient(circle at 30% 20%, rgba(139, 69, 19, 0.2), transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><filter id='n'><feTurbulence baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.34 0 0 0 0 0.21 0 0 0 0 0.08 0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  color: #2d1e10;
+  font-family: 'IM Fell DW Pica', serif;
+}
+.mw-theme-preview[data-theme="steampunk"] .mw-theme-preview-h1 {
+  font-family: 'IM Fell DW Pica', serif;
+  font-style: italic;
+  font-weight: 700;
+  color: #8b4513;
+  font-size: 26px;
+  text-align: center;
+}

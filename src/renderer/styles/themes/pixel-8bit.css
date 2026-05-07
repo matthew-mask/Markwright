@@ -1,0 +1,200 @@
+/* === Pixel 8-bit ===
+   Game Boy LCD palette + chunky pixel type. No anti-aliased curves. */
+[data-theme="pixel-8bit"] {
+  --mw-font-body: 'VT323', 'Press Start 2P', monospace;
+  --mw-font-display: 'Press Start 2P', monospace;
+  --mw-font-ui: 'Press Start 2P', monospace;
+  --mw-font-mono: 'VT323', monospace;
+
+  /* Game Boy LCD: lightest, light, dark, darkest */
+  --gb-1: #9bbc0f;
+  --gb-2: #8bac0f;
+  --gb-3: #306230;
+  --gb-4: #0f380f;
+
+  --mw-bg: var(--gb-1);
+  --mw-fg: var(--gb-4);
+  --mw-fg-strong: var(--gb-4);
+  --mw-fg-muted: var(--gb-3);
+
+  --mw-accent: var(--gb-4);
+  --mw-accent-fg: var(--gb-1);
+
+  --mw-link: var(--gb-3);
+  --mw-link-decoration: underline;
+
+  --mw-line-height: 1.5;
+  --mw-body-size: 22px;
+
+  --mw-heading-weight: 400;
+  --mw-heading-tracking: 0;
+
+  --mw-titlebar-bg: var(--gb-2);
+  --mw-titlebar-border: 4px solid var(--gb-4);
+
+  --mw-btn-bg: var(--gb-1);
+  --mw-btn-bg-hover: var(--gb-2);
+  --mw-btn-border: 4px solid var(--gb-4);
+  --mw-btn-radius: 0;
+
+  --mw-code-bg: var(--gb-2);
+  --mw-codeblock-bg: var(--gb-2);
+  --mw-codeblock-border: 4px solid var(--gb-4);
+  --mw-codeblock-radius: 0;
+  --mw-codeblock-fg: var(--gb-4);
+
+  --mw-quote-border: 4px solid var(--gb-4);
+  --mw-quote-bg: var(--gb-2);
+  --mw-quote-fg: var(--gb-4);
+  --mw-quote-style: normal;
+
+  --mw-rule: var(--gb-4);
+  --mw-selection: var(--gb-3);
+  --mw-table-border: 3px solid var(--gb-4);
+  --mw-table-head-bg: var(--gb-3);
+
+  --mw-modal-bg: var(--gb-1);
+  --mw-modal-border: 4px solid var(--gb-4);
+  --mw-modal-radius: 0;
+  --mw-modal-backdrop: rgba(15, 56, 15, 0.7);
+
+  --mw-decoration-opacity: 0.5;
+  --mw-content-overlay: linear-gradient(180deg, rgba(155, 188, 15, 0.25), rgba(155, 188, 15, 0.4));
+
+  /* Critical: no anti-aliasing or smoothing */
+  image-rendering: pixelated;
+}
+
+[data-theme="pixel-8bit"] body {
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+}
+
+/* LCD subpixel grid bg decoration */
+[data-theme="pixel-8bit"] .mw-bg-decoration {
+  display: block;
+  background-image:
+    linear-gradient(0deg, rgba(15, 56, 15, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 56, 15, 0.1) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+[data-theme="pixel-8bit"] .mw-titlebar { color: var(--gb-1); }
+[data-theme="pixel-8bit"] .mw-titlebar .mw-brand {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--gb-1);
+}
+[data-theme="pixel-8bit"] .mw-titlebar .mw-filename {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--gb-1);
+}
+
+[data-theme="pixel-8bit"] .mw-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 8px 12px;
+  box-shadow: 4px 4px 0 var(--gb-4);
+  transition: none;
+}
+[data-theme="pixel-8bit"] .mw-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--gb-4); }
+[data-theme="pixel-8bit"] .mw-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--gb-4); }
+[data-theme="pixel-8bit"] .mw-btn-accent { background: var(--gb-4); color: var(--gb-1); }
+
+/* Headings: pixel font with stepped underline */
+[data-theme="pixel-8bit"] .ProseMirror h1 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.6em;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--gb-4);
+  margin-top: 1em;
+}
+
+[data-theme="pixel-8bit"] .ProseMirror h2 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.2em;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--gb-3);
+  border-bottom: 4px solid var(--gb-4);
+  padding-bottom: 0.4em;
+  margin-top: 1.4em;
+}
+
+[data-theme="pixel-8bit"] .ProseMirror h3 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.9em;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--gb-3);
+}
+
+[data-theme="pixel-8bit"] .ProseMirror h2::before {
+  content: '> ';
+  color: var(--gb-3);
+}
+
+[data-theme="pixel-8bit"] .ProseMirror strong {
+  color: var(--gb-4);
+  background: var(--gb-2);
+  padding: 0 4px;
+}
+
+[data-theme="pixel-8bit"] .ProseMirror em {
+  color: var(--gb-3);
+  font-style: normal;
+}
+
+/* HR: pixelated dotted line */
+[data-theme="pixel-8bit"] .ProseMirror hr {
+  border: 0;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, var(--gb-4) 0, var(--gb-4) 8px, transparent 8px, transparent 16px);
+  margin: 2em 0;
+}
+
+/* Bullet lists with chunky pixel bullets */
+[data-theme="pixel-8bit"] .ProseMirror ul:not([data-type="taskList"]) {
+  list-style: none;
+  padding-left: 1.2em;
+}
+[data-theme="pixel-8bit"] .ProseMirror ul:not([data-type="taskList"]) > li {
+  position: relative;
+}
+[data-theme="pixel-8bit"] .ProseMirror ul:not([data-type="taskList"]) > li::before {
+  content: '';
+  position: absolute;
+  left: -1.1em;
+  top: 0.55em;
+  width: 8px;
+  height: 8px;
+  background: var(--gb-4);
+}
+
+[data-theme="pixel-8bit"] .ProseMirror table th {
+  color: var(--gb-1);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.mw-theme-preview[data-theme="pixel-8bit"] {
+  background-color: #9bbc0f;
+  background-image:
+    linear-gradient(0deg, rgba(15, 56, 15, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 56, 15, 0.12) 1px, transparent 1px);
+  background-size: 4px 4px;
+  color: #0f380f;
+  font-family: 'Press Start 2P', monospace;
+}
+.mw-theme-preview[data-theme="pixel-8bit"] .mw-theme-preview-h1 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 18px;
+  color: #0f380f;
+  font-weight: 400;
+}

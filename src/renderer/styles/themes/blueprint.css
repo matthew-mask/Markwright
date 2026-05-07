@@ -1,0 +1,118 @@
+/* === Blueprint === */
+[data-theme="blueprint"] {
+  --mw-font-body: 'IBM Plex Sans', sans-serif;
+  --mw-font-display: 'IBM Plex Mono', monospace;
+  --mw-font-ui: 'IBM Plex Mono', monospace;
+  --mw-font-mono: 'IBM Plex Mono', monospace;
+
+  --mw-bg: #0a2845;
+  --mw-fg: #d8ecff;
+  --mw-fg-strong: #ffffff;
+  --mw-fg-muted: rgba(216, 236, 255, 0.65);
+
+  --mw-accent: #7fdcff;
+  --mw-accent-fg: #0a2845;
+
+  --mw-link: #7fdcff;
+  --mw-link-decoration: underline;
+
+  --mw-line-height: 1.7;
+  --mw-body-size: 16px;
+
+  --mw-heading-weight: 500;
+  --mw-heading-tracking: 0.04em;
+
+  --mw-titlebar-bg: rgba(10, 40, 69, 0.8);
+  --mw-titlebar-border: 1px solid rgba(127, 220, 255, 0.3);
+
+  --mw-btn-bg: transparent;
+  --mw-btn-bg-hover: rgba(127, 220, 255, 0.15);
+  --mw-btn-border: 1px solid rgba(127, 220, 255, 0.5);
+  --mw-btn-radius: 0;
+
+  --mw-code-bg: rgba(127, 220, 255, 0.12);
+  --mw-codeblock-bg: rgba(0, 0, 0, 0.3);
+  --mw-codeblock-border: 1px solid rgba(127, 220, 255, 0.3);
+  --mw-codeblock-radius: 0;
+  --mw-codeblock-fg: #7fdcff;
+
+  --mw-quote-border: 1px solid rgba(127, 220, 255, 0.5);
+  --mw-quote-bg: rgba(127, 220, 255, 0.06);
+  --mw-quote-fg: #d8ecff;
+  --mw-quote-style: normal;
+  --mw-quote-padding: 0.8em 1.2em;
+
+  --mw-rule: rgba(127, 220, 255, 0.3);
+  --mw-selection: rgba(127, 220, 255, 0.3);
+  --mw-table-border: 1px solid rgba(127, 220, 255, 0.5);
+  --mw-table-head-bg: rgba(127, 220, 255, 0.1);
+
+  --mw-modal-bg: #0a2845;
+  --mw-modal-border: 1px solid rgba(127, 220, 255, 0.4);
+  --mw-modal-radius: 0;
+  --mw-modal-backdrop: rgba(0, 0, 0, 0.7);
+
+  --mw-decoration-opacity: 0.45;
+  --mw-content-overlay: linear-gradient(180deg, rgba(10, 40, 69, 0.45), rgba(10, 40, 69, 0.55));
+}
+
+[data-theme="blueprint"] .mw-bg-decoration {
+  background-image:
+    linear-gradient(rgba(127, 220, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(127, 220, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(127, 220, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(127, 220, 255, 0.04) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+  display: block;
+}
+
+[data-theme="blueprint"] .ProseMirror h1 {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid rgba(127, 220, 255, 0.4);
+  padding-bottom: 0.3em;
+}
+
+[data-theme="blueprint"] .ProseMirror h1::before {
+  content: "[ ";
+  color: #7fdcff;
+}
+[data-theme="blueprint"] .ProseMirror h1::after {
+  content: " ]";
+  color: #7fdcff;
+}
+
+[data-theme="blueprint"] .ProseMirror h2 {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+[data-theme="blueprint"] .ProseMirror h2::before {
+  content: "// ";
+  color: rgba(127, 220, 255, 0.7);
+}
+
+[data-theme="blueprint"] .ProseMirror hr {
+  height: 0;
+  border-top: 1px dashed rgba(127, 220, 255, 0.5);
+  background: transparent;
+}
+
+[data-theme="blueprint"] .mw-brand {
+  color: #7fdcff;
+  font-family: 'IBM Plex Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.mw-theme-preview[data-theme="blueprint"] {
+  background: #0a2845;
+  background-image:
+    linear-gradient(rgba(127, 220, 255, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(127, 220, 255, 0.15) 1px, transparent 1px);
+  background-size: 12px 12px;
+  color: #7fdcff;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.mw-theme-preview[data-theme="blueprint"] .mw-theme-preview-h1 { color: #7fdcff; }
+.mw-theme-preview[data-theme="blueprint"] .mw-theme-preview-line { background: #d8ecff; }

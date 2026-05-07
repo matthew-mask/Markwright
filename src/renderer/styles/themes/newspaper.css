@@ -1,0 +1,152 @@
+/* === Newspaper === */
+[data-theme="newspaper"] {
+  --mw-font-body: 'Playfair Display', Georgia, serif;
+  --mw-font-display: 'Playfair Display', Georgia, serif;
+  --mw-font-ui: 'Playfair Display', serif;
+  --mw-font-mono: 'IBM Plex Mono', monospace;
+
+  --mw-bg: #f3ead2;
+  --mw-fg: #1a1208;
+  --mw-fg-strong: #000;
+  --mw-fg-muted: rgba(26, 18, 8, 0.65);
+
+  --mw-accent: #8b1a1a;
+  --mw-accent-fg: #f3ead2;
+
+  --mw-link: #8b1a1a;
+  --mw-link-decoration: underline;
+
+  --mw-line-height: 1.65;
+  --mw-body-size: 17px;
+
+  --mw-heading-weight: 900;
+  --mw-heading-tracking: -0.02em;
+
+  --mw-titlebar-bg: rgba(243, 234, 210, 0.92);
+  --mw-titlebar-border: 3px double #1a1208;
+
+  --mw-btn-bg: transparent;
+  --mw-btn-bg-hover: rgba(139, 26, 26, 0.1);
+  --mw-btn-border: 1px solid #1a1208;
+  --mw-btn-radius: 0;
+
+  --mw-code-bg: rgba(26, 18, 8, 0.08);
+  --mw-codeblock-bg: rgba(26, 18, 8, 0.06);
+  --mw-codeblock-border: 1px solid rgba(26, 18, 8, 0.3);
+  --mw-codeblock-radius: 0;
+
+  --mw-quote-border: 0;
+  --mw-quote-bg: transparent;
+  --mw-quote-fg: #1a1208;
+  --mw-quote-style: italic;
+  --mw-quote-padding: 0.4em 0 0.4em 0;
+
+  --mw-rule: #1a1208;
+  --mw-selection: rgba(139, 26, 26, 0.2);
+  --mw-table-border: 1px solid #1a1208;
+  --mw-table-head-bg: #1a1208;
+
+  --mw-modal-bg: #f3ead2;
+  --mw-modal-border: 3px double #1a1208;
+  --mw-modal-radius: 0;
+
+  --mw-decoration-opacity: 0.45;
+  --mw-content-overlay: linear-gradient(180deg, rgba(243, 234, 210, 0.35), rgba(243, 234, 210, 0.5));
+}
+
+[data-theme="newspaper"] .mw-bg-decoration {
+  background-image:
+    radial-gradient(circle at 25% 30%, rgba(26, 18, 8, 0.08), transparent 40%),
+    radial-gradient(circle at 75% 70%, rgba(26, 18, 8, 0.06), transparent 50%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.07 0 0 0 0 0.03 0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  display: block;
+  opacity: 0.7;
+}
+
+[data-theme="newspaper"] .mw-titlebar .mw-brand {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 18px;
+}
+
+[data-theme="newspaper"] .ProseMirror h1 {
+  font-size: 3em;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  border-top: 3px double #1a1208;
+  border-bottom: 3px double #1a1208;
+  padding: 0.3em 0;
+  text-transform: uppercase;
+}
+
+[data-theme="newspaper"] .ProseMirror h2 {
+  font-size: 1.8em;
+  font-weight: 900;
+  border-bottom: 1px solid #1a1208;
+  padding-bottom: 0.2em;
+}
+
+[data-theme="newspaper"] .ProseMirror h2::after {
+  content: " ◆";
+  color: #8b1a1a;
+}
+
+[data-theme="newspaper"] .ProseMirror p:first-of-type::first-letter,
+[data-theme="newspaper"] .ProseMirror h1 + p::first-letter {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 4.2em;
+  float: left;
+  line-height: 0.85;
+  margin: 0.05em 0.08em 0 0;
+  color: #8b1a1a;
+}
+
+[data-theme="newspaper"] .ProseMirror blockquote {
+  font-size: 1.3em;
+  text-align: center;
+  border-top: 1px solid #1a1208;
+  border-bottom: 1px solid #1a1208;
+  padding: 0.8em 1em;
+  margin: 1.5em 0;
+  font-style: italic;
+}
+
+[data-theme="newspaper"] .ProseMirror blockquote::before {
+  content: "“";
+  font-size: 2em;
+  line-height: 0;
+  vertical-align: -0.3em;
+  margin-right: 0.1em;
+  color: #8b1a1a;
+}
+
+[data-theme="newspaper"] .ProseMirror table th {
+  color: #f3ead2;
+  font-family: 'Playfair Display', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+[data-theme="newspaper"] .ProseMirror hr {
+  height: 0;
+  background: transparent;
+  border-top: 3px double #1a1208;
+}
+
+.mw-theme-preview[data-theme="newspaper"] {
+  background: #f3ead2;
+  color: #1a1208;
+  font-family: 'Playfair Display', serif;
+}
+.mw-theme-preview[data-theme="newspaper"] .mw-theme-preview-h1 {
+  font-style: italic;
+  font-weight: 900;
+  border-top: 2px double #1a1208;
+  border-bottom: 2px double #1a1208;
+  padding: 2px 0;
+  font-size: 24px;
+  text-align: center;
+}

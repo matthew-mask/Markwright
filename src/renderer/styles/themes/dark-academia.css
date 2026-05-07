@@ -1,0 +1,214 @@
+/* === Dark Academia ===
+   Oxblood + brass + candlelit cream on charred-wood backdrop.
+   Library-after-hours energy. */
+[data-theme="dark-academia"] {
+  --mw-font-body: 'Crimson Pro', 'EB Garamond', Georgia, serif;
+  --mw-font-display: 'Cinzel', 'EB Garamond', serif;
+  --mw-font-ui: 'Cinzel', serif;
+  --mw-font-mono: 'IBM Plex Mono', monospace;
+
+  --mw-bg: #1a130c;
+  --mw-fg: #e8d9b6;
+  --mw-fg-strong: #f5e7c2;
+  --mw-fg-muted: rgba(232, 217, 182, 0.65);
+
+  --mw-accent: #8b3a3a;
+  --mw-accent-fg: #f5e7c2;
+
+  --mw-link: #c08a3e;
+  --mw-link-decoration: underline;
+
+  --mw-line-height: 1.75;
+  --mw-body-size: 18px;
+
+  --mw-heading-weight: 700;
+  --mw-heading-tracking: 0.06em;
+
+  --mw-titlebar-bg: rgba(26, 19, 12, 0.85);
+  --mw-titlebar-border: 1px solid rgba(192, 138, 62, 0.4);
+
+  --mw-btn-bg: transparent;
+  --mw-btn-bg-hover: rgba(192, 138, 62, 0.15);
+  --mw-btn-border: 1px solid rgba(192, 138, 62, 0.5);
+  --mw-btn-radius: 0;
+
+  --mw-code-bg: rgba(192, 138, 62, 0.12);
+  --mw-codeblock-bg: rgba(0, 0, 0, 0.35);
+  --mw-codeblock-border: 1px solid rgba(192, 138, 62, 0.35);
+  --mw-codeblock-radius: 2px;
+  --mw-codeblock-fg: #e8d9b6;
+
+  --mw-quote-border: 0;
+  --mw-quote-bg: transparent;
+  --mw-quote-fg: rgba(232, 217, 182, 0.85);
+  --mw-quote-style: italic;
+  --mw-quote-padding: 0.6em 1.6em;
+
+  --mw-rule: rgba(192, 138, 62, 0.4);
+  --mw-selection: rgba(139, 58, 58, 0.45);
+  --mw-table-border: 1px solid rgba(192, 138, 62, 0.4);
+  --mw-table-head-bg: rgba(192, 138, 62, 0.18);
+
+  --mw-modal-bg: #1a130c;
+  --mw-modal-border: 1px solid rgba(192, 138, 62, 0.5);
+  --mw-modal-radius: 2px;
+  --mw-modal-backdrop: rgba(0, 0, 0, 0.78);
+
+  --mw-decoration-opacity: 0.85;
+  --mw-content-overlay: linear-gradient(180deg, rgba(26, 19, 12, 0.35), rgba(26, 19, 12, 0.5));
+}
+
+/* Candlelit vignette + faint warm grain */
+[data-theme="dark-academia"] .mw-bg-decoration {
+  display: block;
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 35%, rgba(192, 138, 62, 0.18), transparent 65%),
+    radial-gradient(circle at 18% 100%, rgba(139, 58, 58, 0.14), transparent 55%),
+    radial-gradient(circle at 90% 5%, rgba(192, 138, 62, 0.1), transparent 50%);
+}
+[data-theme="dark-academia"] .mw-bg-decoration::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.32 0 0 0 0 0.18 0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.7;
+}
+
+[data-theme="dark-academia"] .mw-titlebar .mw-brand {
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #c08a3e;
+  font-weight: 700;
+}
+
+[data-theme="dark-academia"] .mw-btn {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: #c08a3e;
+}
+[data-theme="dark-academia"] .mw-btn-accent {
+  background: #8b3a3a;
+  color: #f5e7c2;
+  border-color: #8b3a3a;
+}
+
+[data-theme="dark-academia"] .ProseMirror h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 2.4em;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #c08a3e;
+  text-align: center;
+  position: relative;
+  padding: 0.3em 0;
+  margin-bottom: 0.6em;
+}
+[data-theme="dark-academia"] .ProseMirror h1::before,
+[data-theme="dark-academia"] .ProseMirror h1::after {
+  content: '';
+  display: block;
+  height: 1px;
+  width: 60%;
+  margin: 0.3em auto;
+  background: linear-gradient(90deg, transparent, #c08a3e, transparent);
+}
+
+[data-theme="dark-academia"] .ProseMirror h2 {
+  font-family: 'Cinzel', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 1.5em;
+  color: #f5e7c2;
+  border-bottom: 1px solid rgba(192, 138, 62, 0.4);
+  padding-bottom: 0.2em;
+}
+
+[data-theme="dark-academia"] .ProseMirror h3 {
+  font-family: 'Cinzel', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #c08a3e;
+}
+
+/* Drop cap on first paragraph after H1 */
+[data-theme="dark-academia"] .ProseMirror h1 + p::first-letter {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 4em;
+  float: left;
+  line-height: 0.88;
+  margin: 0.05em 0.12em -0.1em 0;
+  color: #8b3a3a;
+}
+
+[data-theme="dark-academia"] .ProseMirror strong {
+  color: #c08a3e;
+  font-weight: 700;
+}
+
+[data-theme="dark-academia"] .ProseMirror blockquote {
+  font-style: italic;
+  font-size: 1.05em;
+  position: relative;
+  padding: 0.6em 1.6em;
+}
+[data-theme="dark-academia"] .ProseMirror blockquote::before {
+  content: '\201C';
+  position: absolute;
+  left: 0; top: -0.2em;
+  font-family: 'Cinzel', serif;
+  font-size: 3em;
+  color: rgba(192, 138, 62, 0.55);
+  line-height: 1;
+}
+
+/* HR: brass rule with center diamond */
+[data-theme="dark-academia"] .ProseMirror hr {
+  border: 0;
+  height: 1.6em;
+  background: linear-gradient(90deg, transparent 0, rgba(192, 138, 62, 0.5) 25%, rgba(192, 138, 62, 0.5) 75%, transparent 100%);
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  position: relative;
+  margin: 2em 0;
+}
+[data-theme="dark-academia"] .ProseMirror hr::after {
+  content: '\25C6';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -55%);
+  color: #c08a3e;
+  background: #1a130c;
+  padding: 0 0.6em;
+  font-size: 0.9em;
+}
+
+[data-theme="dark-academia"] .ProseMirror table th {
+  font-family: 'Cinzel', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #c08a3e;
+}
+
+.mw-theme-preview[data-theme="dark-academia"] {
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(192, 138, 62, 0.25), transparent 65%),
+    #1a130c;
+  color: #c08a3e;
+  font-family: 'Cinzel', serif;
+}
+.mw-theme-preview[data-theme="dark-academia"] .mw-theme-preview-h1 {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #c08a3e;
+  font-size: 22px;
+  text-align: center;
+}

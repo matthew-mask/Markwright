@@ -1,0 +1,284 @@
+/* Base shell — themes override via [data-theme="..."] */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--mw-font-body, 'Inter', system-ui, sans-serif);
+  color: var(--mw-fg, #1a1a1a);
+  background: var(--mw-bg, #fafafa);
+  -webkit-font-smoothing: antialiased;
+}
+
+.mw-app {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  background: var(--mw-bg, #fafafa);
+  color: var(--mw-fg, #1a1a1a);
+  isolation: isolate;
+}
+
+.mw-bg-decoration {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: var(--mw-decoration-opacity, 0.55);
+}
+
+/* Soft overlay between decoration and text — painted on .mw-main itself
+   so it stays anchored to the visible viewport instead of scrolling with content. */
+.mw-main {
+  background: var(--mw-content-overlay, transparent);
+}
+
+/* Title bar */
+.mw-titlebar {
+  position: relative;
+  z-index: 2;
+  height: 44px;
+  background: var(--mw-titlebar-bg, transparent);
+  border-bottom: var(--mw-titlebar-border, 1px solid rgba(0, 0, 0, 0.06));
+  display: grid;
+  grid-template-columns: 1fr;
+  -webkit-app-region: drag;
+}
+
+.mw-titlebar-drag {
+  position: absolute;
+  inset: 0;
+  -webkit-app-region: drag;
+}
+
+.mw-titlebar-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* Right side leaves space for Windows native min/max/close controls (~140px). */
+  padding: 0 150px 0 16px;
+  height: 100%;
+  -webkit-app-region: drag;
+}
+
+.mw-titlebar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mw-font-ui, 'Inter', system-ui, sans-serif);
+  font-size: 13px;
+  color: var(--mw-fg-muted, rgba(0,0,0,0.6));
+}
+
+.mw-brand {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--mw-fg, #1a1a1a);
+}
+
+.mw-sep { opacity: 0.4; }
+
+.mw-filename {
+  font-family: var(--mw-font-ui, 'Inter', system-ui, sans-serif);
+}
+
+.mw-dirty-dot {
+  margin-right: 6px;
+  color: var(--mw-accent, #f59e0b);
+  font-size: 10px;
+}
+
+.mw-titlebar-right {
+  display: flex;
+  gap: 8px;
+}
+
+.mw-btn {
+  -webkit-app-region: no-drag;
+}
+
+.mw-btn {
+  appearance: none;
+  border: var(--mw-btn-border, 1px solid rgba(0,0,0,0.12));
+  background: var(--mw-btn-bg, rgba(255,255,255,0.7));
+  color: var(--mw-fg, #1a1a1a);
+  font: inherit;
+  font-family: var(--mw-font-ui, 'Inter', system-ui, sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: 6px 12px;
+  border-radius: var(--mw-btn-radius, 6px);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.mw-btn:hover {
+  background: var(--mw-btn-bg-hover, rgba(0,0,0,0.04));
+}
+
+.mw-btn-accent {
+  background: var(--mw-accent, #1a1a1a);
+  color: var(--mw-accent-fg, #fff);
+  border-color: var(--mw-accent, #1a1a1a);
+}
+
+.mw-btn-accent:hover {
+  filter: brightness(1.1);
+}
+
+/* Main / editor wrapper */
+.mw-main {
+  position: relative;
+  z-index: 1;
+  overflow: auto;
+  padding: 48px 15%;
+}
+
+.mw-editor-wrap {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Modal (theme picker) */
+.mw-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--mw-modal-backdrop, rgba(0,0,0,0.45));
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  padding: 32px;
+}
+
+.mw-modal {
+  width: min(960px, 100%);
+  max-height: 84vh;
+  overflow: auto;
+  background: var(--mw-modal-bg, #fff);
+  color: var(--mw-fg, #1a1a1a);
+  border: var(--mw-modal-border, 1px solid rgba(0,0,0,0.1));
+  border-radius: var(--mw-modal-radius, 14px);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+  padding: 24px;
+}
+
+.mw-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.mw-modal-header h2 {
+  margin: 0;
+  font-family: var(--mw-font-display, var(--mw-font-body, 'Inter', system-ui, sans-serif));
+  font-size: 22px;
+  letter-spacing: 0.02em;
+}
+
+.mw-modal-footer {
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--mw-fg-muted, rgba(0,0,0,0.55));
+}
+
+.mw-theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.mw-theme-card {
+  appearance: none;
+  text-align: left;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0,0,0,0.02);
+  border-radius: 10px;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  color: inherit;
+}
+
+.mw-theme-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+
+.mw-theme-card-active {
+  border-color: var(--mw-accent, #f59e0b);
+  box-shadow: 0 0 0 2px var(--mw-accent, #f59e0b);
+}
+
+.mw-theme-preview {
+  height: 110px;
+  position: relative;
+  overflow: hidden;
+}
+
+.mw-theme-preview-inner {
+  position: absolute;
+  inset: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mw-theme-preview-h1 {
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.mw-theme-preview-line {
+  height: 6px;
+  width: 80%;
+  border-radius: 3px;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.mw-theme-preview-line.short { width: 50%; opacity: 0.35; }
+
+.mw-theme-meta {
+  padding: 12px 14px 14px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.6);
+}
+
+.mw-theme-name {
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.mw-theme-desc {
+  font-size: 11px;
+  opacity: 0.7;
+  line-height: 1.4;
+}
+
+.mw-theme-tag {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 6px;
+  font-size: 10px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}

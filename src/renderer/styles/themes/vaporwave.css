@@ -1,0 +1,178 @@
+/* === Vaporwave === */
+[data-theme="vaporwave"] {
+  --mw-font-body: 'Rajdhani', sans-serif;
+  --mw-font-display: 'Audiowide', 'Orbitron', sans-serif;
+  --mw-font-ui: 'Rajdhani', sans-serif;
+  --mw-font-mono: 'Share Tech Mono', monospace;
+
+  --mw-bg: #2b0a3a;
+  --mw-fg: #ffe2f7;
+  --mw-fg-strong: #ffffff;
+  --mw-fg-muted: rgba(255, 226, 247, 0.7);
+
+  --mw-accent: #ff71ce;
+  --mw-accent-fg: #2b0a3a;
+
+  --mw-link: #01cdfe;
+  --mw-link-decoration: underline;
+
+  --mw-line-height: 1.7;
+  --mw-body-size: 17px;
+
+  --mw-heading-weight: 700;
+  --mw-heading-tracking: 0.05em;
+
+  --mw-titlebar-bg: rgba(43, 10, 58, 0.7);
+  --mw-titlebar-border: 1px solid rgba(255, 113, 206, 0.4);
+
+  --mw-btn-bg: rgba(255, 255, 255, 0.08);
+  --mw-btn-bg-hover: rgba(1, 205, 254, 0.18);
+  --mw-btn-border: 1px solid rgba(1, 205, 254, 0.6);
+  --mw-btn-radius: 999px;
+
+  --mw-code-bg: rgba(1, 205, 254, 0.12);
+  --mw-codeblock-bg: rgba(0, 0, 0, 0.35);
+  --mw-codeblock-border: 1px solid rgba(255, 113, 206, 0.5);
+  --mw-codeblock-radius: 8px;
+  --mw-codeblock-fg: #fdfd96;
+
+  --mw-quote-border: 3px solid #ff71ce;
+  --mw-quote-bg: rgba(255, 113, 206, 0.08);
+  --mw-quote-fg: #ffe2f7;
+  --mw-quote-style: italic;
+
+  --mw-rule: rgba(1, 205, 254, 0.5);
+  --mw-selection: rgba(255, 113, 206, 0.35);
+  --mw-table-border: 1px solid rgba(255, 113, 206, 0.4);
+  --mw-table-head-bg: rgba(255, 113, 206, 0.18);
+
+  --mw-modal-bg: rgba(43, 10, 58, 0.92);
+  --mw-modal-border: 1px solid #ff71ce;
+  --mw-modal-radius: 14px;
+  --mw-modal-backdrop: rgba(0, 0, 0, 0.7);
+
+  --mw-decoration-opacity: 0.7;
+  --mw-content-overlay: linear-gradient(180deg, rgba(43, 10, 58, 0.4), rgba(43, 10, 58, 0.55));
+}
+
+[data-theme="vaporwave"] .mw-app {
+  background:
+    linear-gradient(180deg, #2b0a3a 0%, #6a1f74 35%, #c75bb4 60%, #ff8c66 78%, #ffd86b 88%, #2b0a3a 92%) fixed;
+}
+
+/* Sun-grid horizon: perspective floor with magenta/cyan grid */
+[data-theme="vaporwave"] .mw-bg-decoration {
+  display: block;
+  background:
+    radial-gradient(ellipse 60% 25% at 50% 56%, rgba(255, 216, 107, 0.6), transparent 60%),
+    linear-gradient(transparent 60%, rgba(255, 113, 206, 0.6) 60%, rgba(1, 205, 254, 0.5) 100%);
+}
+
+[data-theme="vaporwave"] .mw-bg-decoration::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 40%;
+  background:
+    repeating-linear-gradient(
+      to right,
+      rgba(1, 205, 254, 0.55) 0,
+      rgba(1, 205, 254, 0.55) 1px,
+      transparent 1px,
+      transparent 8%
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 113, 206, 0.6) 0,
+      rgba(255, 113, 206, 0.6) 1px,
+      transparent 1px,
+      transparent 8%
+    );
+  transform: perspective(400px) rotateX(60deg);
+  transform-origin: top center;
+  mask-image: linear-gradient(180deg, black, transparent 95%);
+}
+
+[data-theme="vaporwave"] .mw-titlebar {
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+[data-theme="vaporwave"] .mw-titlebar .mw-brand {
+  font-family: 'Audiowide', sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #ffffff 0%, #ffd86b 45%, #ff71ce 55%, #6a1f74 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+[data-theme="vaporwave"] .mw-btn {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+[data-theme="vaporwave"] .mw-btn-accent {
+  background: linear-gradient(135deg, #ff71ce, #b967ff 50%, #01cdfe);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 14px rgba(255, 113, 206, 0.45);
+}
+
+/* Chrome-script headings */
+[data-theme="vaporwave"] .ProseMirror h1 {
+  font-family: 'Audiowide', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: linear-gradient(180deg, #ffffff 0%, #ffd86b 38%, #ff71ce 60%, #6a1f74 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 4px 18px rgba(255, 113, 206, 0.35);
+}
+
+[data-theme="vaporwave"] .ProseMirror h2 {
+  font-family: 'Audiowide', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #01cdfe;
+  text-shadow: 0 0 8px rgba(1, 205, 254, 0.4);
+}
+
+[data-theme="vaporwave"] .ProseMirror h3 {
+  text-transform: uppercase;
+  color: #ff71ce;
+}
+
+[data-theme="vaporwave"] .ProseMirror strong {
+  color: #fdfd96;
+}
+
+[data-theme="vaporwave"] .ProseMirror hr {
+  height: 0;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid #01cdfe;
+  box-shadow: 0 0 10px rgba(1, 205, 254, 0.6), 0 6px 0 -5px #ff71ce;
+}
+
+[data-theme="vaporwave"] .ProseMirror blockquote {
+  box-shadow: -3px 0 14px rgba(255, 113, 206, 0.4);
+}
+
+.mw-theme-preview[data-theme="vaporwave"] {
+  background:
+    radial-gradient(ellipse 70% 35% at 50% 60%, rgba(255, 216, 107, 0.7), transparent 65%),
+    linear-gradient(180deg, #2b0a3a 0%, #6a1f74 50%, #ff71ce 80%);
+  color: #ffe2f7;
+  font-family: 'Audiowide', sans-serif;
+}
+.mw-theme-preview[data-theme="vaporwave"] .mw-theme-preview-h1 {
+  background: linear-gradient(180deg, #fff, #ffd86b 40%, #ff71ce 60%, #6a1f74);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-transform: uppercase;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+}

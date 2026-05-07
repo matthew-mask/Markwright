@@ -1,0 +1,124 @@
+/* === Glassmorphism === */
+[data-theme="glassmorphism"] {
+  --mw-font-body: 'Inter', system-ui, sans-serif;
+  --mw-font-display: 'Inter', system-ui, sans-serif;
+  --mw-font-ui: 'Inter', sans-serif;
+  --mw-font-mono: 'JetBrains Mono', monospace;
+
+  --mw-bg: #0e0a1f;
+  --mw-fg: #f5f3ff;
+  --mw-fg-strong: #ffffff;
+  --mw-fg-muted: rgba(245, 243, 255, 0.7);
+
+  --mw-accent: #a78bfa;
+  --mw-accent-fg: #0e0a1f;
+
+  --mw-link: #c4b5fd;
+
+  --mw-line-height: 1.7;
+  --mw-body-size: 16px;
+
+  --mw-heading-weight: 600;
+  --mw-heading-tracking: -0.01em;
+
+  --mw-titlebar-bg: rgba(255, 255, 255, 0.06);
+  --mw-titlebar-border: 1px solid rgba(255, 255, 255, 0.1);
+
+  --mw-btn-bg: rgba(255, 255, 255, 0.08);
+  --mw-btn-bg-hover: rgba(255, 255, 255, 0.16);
+  --mw-btn-border: 1px solid rgba(255, 255, 255, 0.18);
+  --mw-btn-radius: 999px;
+
+  --mw-code-bg: rgba(255, 255, 255, 0.1);
+  --mw-codeblock-bg: rgba(255, 255, 255, 0.06);
+  --mw-codeblock-border: 1px solid rgba(255, 255, 255, 0.12);
+  --mw-codeblock-radius: 14px;
+
+  --mw-quote-border: 3px solid rgba(167, 139, 250, 0.7);
+  --mw-quote-bg: rgba(255, 255, 255, 0.05);
+  --mw-quote-fg: #f5f3ff;
+  --mw-quote-style: normal;
+
+  --mw-rule: rgba(255, 255, 255, 0.15);
+  --mw-selection: rgba(167, 139, 250, 0.4);
+  --mw-table-border: 1px solid rgba(255, 255, 255, 0.15);
+  --mw-table-head-bg: rgba(255, 255, 255, 0.06);
+
+  --mw-modal-bg: rgba(20, 14, 40, 0.7);
+  --mw-modal-border: 1px solid rgba(255, 255, 255, 0.18);
+  --mw-modal-radius: 22px;
+  --mw-modal-backdrop: rgba(10, 5, 25, 0.55);
+}
+
+[data-theme="glassmorphism"] body {
+  /* fallback if decoration fails */
+  background:
+    radial-gradient(900px circle at 15% 20%, rgba(167, 139, 250, 0.55), transparent 60%),
+    radial-gradient(700px circle at 85% 75%, rgba(56, 189, 248, 0.5), transparent 65%),
+    radial-gradient(500px circle at 50% 50%, rgba(244, 114, 182, 0.35), transparent 70%),
+    #0e0a1f;
+}
+
+[data-theme="glassmorphism"] .mw-app {
+  background:
+    radial-gradient(900px circle at 15% 20%, rgba(167, 139, 250, 0.55), transparent 60%),
+    radial-gradient(700px circle at 85% 75%, rgba(56, 189, 248, 0.5), transparent 65%),
+    radial-gradient(500px circle at 50% 50%, rgba(244, 114, 182, 0.35), transparent 70%),
+    #0e0a1f;
+}
+
+[data-theme="glassmorphism"] .mw-bg-decoration { display: none; }
+
+[data-theme="glassmorphism"] .mw-titlebar {
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+}
+
+[data-theme="glassmorphism"] .mw-main {
+  position: relative;
+}
+
+[data-theme="glassmorphism"] .mw-editor-wrap {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 22px;
+  padding: 40px 48px;
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+[data-theme="glassmorphism"] .ProseMirror pre,
+[data-theme="glassmorphism"] .mw-modal {
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+
+[data-theme="glassmorphism"] .ProseMirror h1 {
+  background: linear-gradient(135deg, #a78bfa, #38bdf8 60%, #f472b6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+[data-theme="glassmorphism"] .mw-btn {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.mw-theme-preview[data-theme="glassmorphism"] {
+  background:
+    radial-gradient(circle at 20% 30%, #a78bfa, transparent 60%),
+    radial-gradient(circle at 80% 70%, #38bdf8, transparent 65%),
+    #0e0a1f;
+  color: #fff;
+}
+.mw-theme-preview[data-theme="glassmorphism"] .mw-theme-preview-inner {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  padding: 10px;
+}
