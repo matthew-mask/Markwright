@@ -208,9 +208,156 @@ body {
 }
 
 /* Main / editor wrapper */
+/* Body: holds sidebar (absolute, in left gutter) + main scroll area. */
+.mw-body {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.mw-sidebar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 15%;
+  min-width: 0;
+  z-index: 2;
+  overflow-y: auto;
+  padding: 14px 8px;
+  font-family: var(--mw-font-ui, 'Inter', system-ui, sans-serif);
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--mw-titlebar-bg, transparent);
+  border-right: 1px solid var(--mw-rule, rgba(0, 0, 0, 0.08));
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+}
+
+.mw-sidebar-new {
+  appearance: none;
+  border: 1px dashed var(--mw-rule, rgba(0, 0, 0, 0.18));
+  background: transparent;
+  color: var(--mw-fg-muted, rgba(0, 0, 0, 0.6));
+  padding: 7px 10px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+.mw-sidebar-new:hover {
+  background: var(--mw-btn-bg-hover, rgba(0, 0, 0, 0.05));
+  color: var(--mw-fg, #1a1a1a);
+  border-color: var(--mw-accent, currentColor);
+  border-style: solid;
+}
+
+.mw-sidebar-new-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.mw-tab-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-height: 0;
+  margin-top: 4px;
+}
+
+.mw-tab {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 6px 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.1s ease;
+  outline: none;
+}
+.mw-tab:hover {
+  background: var(--mw-btn-bg-hover, rgba(0, 0, 0, 0.05));
+}
+.mw-tab:focus-visible {
+  box-shadow: 0 0 0 2px var(--mw-accent, currentColor);
+}
+.mw-tab-active {
+  background: var(--mw-btn-bg-hover, rgba(0, 0, 0, 0.08));
+  font-weight: 600;
+  color: var(--mw-fg-strong, var(--mw-fg, inherit));
+}
+
+.mw-tab-name {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mw-tab-name-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mw-tab-dirty {
+  color: var(--mw-accent, #f59e0b);
+  font-size: 8px;
+  flex-shrink: 0;
+}
+
+.mw-tab-close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--mw-fg-muted, rgba(0, 0, 0, 0.6));
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  display: inline-grid;
+  place-items: center;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 4px;
+  opacity: 0;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: opacity 0.1s ease, background 0.1s ease;
+}
+.mw-tab:hover .mw-tab-close,
+.mw-tab-active .mw-tab-close,
+.mw-tab-close:focus-visible {
+  opacity: 1;
+}
+.mw-tab-close:hover {
+  background: rgba(0, 0, 0, 0.12);
+  color: var(--mw-fg, currentColor);
+}
+
 .mw-main {
   position: relative;
   z-index: 1;
+  height: 100%;
   overflow: auto;
   padding: 48px 15%;
 }

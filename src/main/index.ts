@@ -223,6 +223,19 @@ function registerIpc(): void {
       void shell.openExternal(url);
     }
   });
+
+  ipcMain.handle(IPC.dialogConfirmCloseTab, async (_e, fileName: string) => {
+    if (!mainWindow) return 'cancel';
+    const result = await dialog.showMessageBox(mainWindow, {
+      type: 'warning',
+      buttons: ['Save', "Don't Save", 'Cancel'],
+      defaultId: 0,
+      cancelId: 2,
+      message: `Save changes to ${fileName}?`,
+      detail: "Your changes will be lost if you don't save them."
+    });
+    return (['save', 'discard', 'cancel'] as const)[result.response] ?? 'cancel';
+  });
 }
 
 const gotLock = app.requestSingleInstanceLock();

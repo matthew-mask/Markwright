@@ -35,8 +35,13 @@ export const IPC = {
 
   // app info
   appGetInfo: 'app:getInfo',
-  appOpenExternal: 'app:openExternal'
+  appOpenExternal: 'app:openExternal',
+
+  // dialogs
+  dialogConfirmCloseTab: 'dialog:confirmCloseTab'
 } as const;
+
+export type CloseTabChoice = 'save' | 'discard' | 'cancel';
 
 export type UpdateInfo = {
   version: string;

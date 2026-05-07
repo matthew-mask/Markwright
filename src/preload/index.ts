@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer, webUtils } from 'electron';
-import { IPC, type Settings, type ThemeManifest, type LoadedFile, type UpdateInfo, type AppInfo } from '../shared/ipc';
+import { IPC, type Settings, type ThemeManifest, type LoadedFile, type UpdateInfo, type AppInfo, type CloseTabChoice } from '../shared/ipc';
 
 const api = {
   openFileDialog: (): Promise<LoadedFile | null> => ipcRenderer.invoke(IPC.fileOpenDialog),
@@ -30,7 +30,10 @@ const api = {
   getDroppedFilePath: (file: File): string => webUtils.getPathForFile(file),
 
   getAppInfo: (): Promise<AppInfo> => ipcRenderer.invoke(IPC.appGetInfo),
-  openExternal: (url: string) => ipcRenderer.invoke(IPC.appOpenExternal, url)
+  openExternal: (url: string) => ipcRenderer.invoke(IPC.appOpenExternal, url),
+
+  confirmCloseTab: (fileName: string): Promise<CloseTabChoice> =>
+    ipcRenderer.invoke(IPC.dialogConfirmCloseTab, fileName)
 };
 
 contextBridge.exposeInMainWorld('markwright', api);
