@@ -31,12 +31,26 @@ export const IPC = {
   windowSetTitle: 'window:setTitle',
 
   // updates
-  updateInstall: 'update:install'
+  updateInstall: 'update:install',
+
+  // app info
+  appGetInfo: 'app:getInfo',
+  appOpenExternal: 'app:openExternal'
 } as const;
 
 export type UpdateInfo = {
   version: string;
   releaseNotes?: string;
+};
+
+export type AppInfo = {
+  name: string;
+  version: string;
+  description: string;
+  homepageUrl: string;
+  releasesUrl: string;
+  issuesUrl: string;
+  buildDate: string | null;
 };
 
 export type Settings = {

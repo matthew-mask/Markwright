@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ThemeManifest, UpdateInfo } from '../shared/ipc';
+import { AboutDialog } from './components/AboutDialog';
 import { Editor } from './components/Editor';
 import { TitleBar } from './components/TitleBar';
 import { ThemePicker } from './components/ThemePicker';
@@ -43,6 +44,7 @@ export default function App(): JSX.Element {
     liveContent: DEFAULT_DOC
   });
   const [showThemePicker, setShowThemePicker] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
   const [pendingUpdate, setPendingUpdate] = useState<UpdateInfo | null>(null);
   const { themeId, setThemeId } = useTheme();
   const docRef = useRef(doc);
@@ -177,6 +179,7 @@ export default function App(): JSX.Element {
         onOpen={openFile}
         onSave={saveFile}
         onTogglePicker={() => setShowThemePicker((s) => !s)}
+        onAbout={() => setShowAbout(true)}
       />
       {pendingUpdate && (
         <UpdateBanner
@@ -199,6 +202,7 @@ export default function App(): JSX.Element {
           onClose={() => setShowThemePicker(false)}
         />
       )}
+      {showAbout && <AboutDialog onClose={() => setShowAbout(false)} />}
     </div>
   );
 }

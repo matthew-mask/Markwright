@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer, webUtils } from 'electron';
-import { IPC, type Settings, type ThemeManifest, type LoadedFile, type UpdateInfo } from '../shared/ipc';
+import { IPC, type Settings, type ThemeManifest, type LoadedFile, type UpdateInfo, type AppInfo } from '../shared/ipc';
 
 const api = {
   openFileDialog: (): Promise<LoadedFile | null> => ipcRenderer.invoke(IPC.fileOpenDialog),
@@ -27,7 +27,10 @@ const api = {
 
   // Resolve the absolute path of a File object dropped onto the window.
   // Electron 32+ removed File.path for security; webUtils.getPathForFile is the replacement.
-  getDroppedFilePath: (file: File): string => webUtils.getPathForFile(file)
+  getDroppedFilePath: (file: File): string => webUtils.getPathForFile(file),
+
+  getAppInfo: (): Promise<AppInfo> => ipcRenderer.invoke(IPC.appGetInfo),
+  openExternal: (url: string) => ipcRenderer.invoke(IPC.appOpenExternal, url)
 };
 
 contextBridge.exposeInMainWorld('markwright', api);

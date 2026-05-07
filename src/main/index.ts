@@ -198,6 +198,31 @@ function registerIpc(): void {
   ipcMain.handle(IPC.updateInstall, () => {
     autoUpdater.quitAndInstall();
   });
+
+  ipcMain.handle(IPC.appGetInfo, async () => {
+    let buildDate: string | null = null;
+    try {
+      const stats = await fs.stat(app.getPath('exe'));
+      buildDate = stats.mtime.toISOString();
+    } catch {
+      // best-effort
+    }
+    return {
+      name: 'Markwright',
+      version: app.getVersion(),
+      description: 'A themed Electron markdown viewer/editor with live WYSIWYG and 20 fully-designed visual themes.',
+      homepageUrl: 'https://github.com/matthew-mask/Markwright',
+      releasesUrl: 'https://github.com/matthew-mask/Markwright/releases',
+      issuesUrl: 'https://github.com/matthew-mask/Markwright/issues',
+      buildDate
+    };
+  });
+
+  ipcMain.handle(IPC.appOpenExternal, (_e, url: string) => {
+    if (/^https?:\/\//i.test(url)) {
+      void shell.openExternal(url);
+    }
+  });
 }
 
 const gotLock = app.requestSingleInstanceLock();
