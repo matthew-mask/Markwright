@@ -1,0 +1,182 @@
+/* === Stargazer ===
+   Quiet night sky — twinkling stars, soft nebula glow, unhurried serif. */
+[data-theme="stargazer"] {
+  --mw-font-body: 'EB Garamond', Georgia, serif;
+  --mw-font-display: 'EB Garamond', serif;
+  --mw-font-ui: 'EB Garamond', serif;
+  --mw-font-mono: 'JetBrains Mono', monospace;
+
+  --mw-bg: #0c1430;
+  --mw-fg: #d8e1f5;
+  --mw-fg-strong: #ffffff;
+  --mw-fg-muted: rgba(216, 225, 245, 0.65);
+
+  --mw-accent: #d4af37;
+  --mw-accent-fg: #0c1430;
+
+  --mw-link: #9bb6ff;
+  --mw-link-decoration: underline;
+
+  --mw-line-height: 1.8;
+  --mw-body-size: 17px;
+
+  --mw-heading-weight: 600;
+  --mw-heading-tracking: 0.02em;
+
+  --mw-titlebar-bg: rgba(12, 20, 48, 0.85);
+  --mw-titlebar-border: 1px solid rgba(212, 175, 55, 0.3);
+
+  --mw-btn-bg: transparent;
+  --mw-btn-bg-hover: rgba(212, 175, 55, 0.15);
+  --mw-btn-border: 1px solid rgba(212, 175, 55, 0.45);
+  --mw-btn-radius: 999px;
+
+  --mw-code-bg: rgba(155, 182, 255, 0.12);
+  --mw-codeblock-bg: rgba(0, 0, 0, 0.3);
+  --mw-codeblock-border: 1px solid rgba(155, 182, 255, 0.3);
+  --mw-codeblock-radius: 6px;
+
+  --mw-quote-border: 0;
+  --mw-quote-bg: transparent;
+  --mw-quote-fg: rgba(216, 225, 245, 0.9);
+  --mw-quote-style: italic;
+  --mw-quote-padding: 0.6em 1.6em;
+
+  --mw-rule: transparent;
+  --mw-selection: rgba(212, 175, 55, 0.3);
+  --mw-table-border: 1px solid rgba(155, 182, 255, 0.3);
+  --mw-table-head-bg: rgba(155, 182, 255, 0.12);
+
+  --mw-modal-bg: rgba(12, 20, 48, 0.95);
+  --mw-modal-border: 1px solid rgba(212, 175, 55, 0.4);
+  --mw-modal-radius: 8px;
+
+  --mw-decoration-opacity: 0.85;
+  --mw-content-overlay: linear-gradient(180deg, rgba(12, 20, 48, 0.35), rgba(12, 20, 48, 0.5));
+}
+
+[data-theme="stargazer"] .mw-app {
+  background:
+    radial-gradient(ellipse 80% 40% at 30% 80%, rgba(126, 87, 194, 0.35), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 75% 20%, rgba(58, 123, 213, 0.4), transparent 65%),
+    linear-gradient(180deg, #0c1430 0%, #1a1f4a 100%);
+}
+
+/* Star field — three layers of dots at different sizes/opacities */
+[data-theme="stargazer"] .mw-bg-decoration {
+  display: block;
+  background-image:
+    radial-gradient(circle, #ffffff 1.2px, transparent 1.6px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.7) 0.8px, transparent 1.2px),
+    radial-gradient(circle, rgba(212, 175, 55, 0.6) 0.6px, transparent 1px);
+  background-size: 240px 240px, 140px 140px, 320px 320px;
+  background-position: 30px 80px, 100px 40px, 0 0;
+}
+
+[data-theme="stargazer"] .mw-titlebar .mw-brand {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  color: #d4af37;
+}
+
+[data-theme="stargazer"] .mw-btn-accent {
+  background: #d4af37;
+  color: #0c1430;
+  border-color: #d4af37;
+}
+
+[data-theme="stargazer"] .ProseMirror h1 {
+  font-family: 'EB Garamond', serif;
+  font-weight: 700;
+  font-size: 2.6em;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 0.4em;
+  text-shadow: 0 0 18px rgba(155, 182, 255, 0.4);
+}
+[data-theme="stargazer"] .ProseMirror h1::before,
+[data-theme="stargazer"] .ProseMirror h1::after {
+  content: '\2727';
+  color: #d4af37;
+  font-size: 0.55em;
+  margin: 0 0.5em;
+  vertical-align: 0.3em;
+  opacity: 0.85;
+}
+
+[data-theme="stargazer"] .ProseMirror h2 {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.6em;
+  color: #d4af37;
+}
+[data-theme="stargazer"] .ProseMirror h2::before {
+  content: '\2726  ';
+  color: #9bb6ff;
+}
+
+[data-theme="stargazer"] .ProseMirror h3 {
+  font-family: 'EB Garamond', serif;
+  font-weight: 600;
+  color: #9bb6ff;
+}
+
+[data-theme="stargazer"] .ProseMirror strong {
+  color: #d4af37;
+  font-weight: 700;
+}
+
+[data-theme="stargazer"] .ProseMirror blockquote {
+  position: relative;
+}
+[data-theme="stargazer"] .ProseMirror blockquote::before {
+  content: '\2727';
+  position: absolute;
+  left: 0;
+  top: 0.4em;
+  color: #d4af37;
+  font-size: 1.2em;
+}
+
+/* HR: a constellation — three dots with thin connecting lines */
+[data-theme="stargazer"] .ProseMirror hr {
+  border: 0;
+  height: 14px;
+  background:
+    linear-gradient(90deg, transparent 30%, rgba(212, 175, 55, 0.5) 30% 70%, transparent 70%) center / 100% 1px no-repeat,
+    radial-gradient(circle at 30% 50%, #d4af37 2px, transparent 3px) no-repeat,
+    radial-gradient(circle at 50% 50%, #ffffff 2.5px, transparent 3.5px) no-repeat,
+    radial-gradient(circle at 70% 50%, #d4af37 2px, transparent 3px) no-repeat;
+  margin: 2.5em 0;
+}
+
+[data-theme="stargazer"] .ProseMirror table th {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #d4af37;
+}
+
+.mw-theme-preview[data-theme="stargazer"] {
+  background:
+    radial-gradient(circle, #ffffff 1px, transparent 1.4px) 30px 30px / 80px 80px,
+    radial-gradient(ellipse at 70% 30%, rgba(58, 123, 213, 0.5), transparent 70%),
+    linear-gradient(180deg, #0c1430, #1a1f4a);
+  color: #d4af37;
+  font-family: 'EB Garamond', serif;
+}
+.mw-theme-preview[data-theme="stargazer"] .mw-theme-preview-h1 {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 24px;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 12px rgba(155, 182, 255, 0.5);
+}

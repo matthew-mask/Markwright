@@ -21,7 +21,7 @@ body {
 .mw-app {
   position: relative;
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto auto 1fr;
   height: 100%;
   background: var(--mw-bg, #fafafa);
   color: var(--mw-fg, #1a1a1a);
@@ -40,6 +40,61 @@ body {
    so it stays anchored to the visible viewport instead of scrolling with content. */
 .mw-main {
   background: var(--mw-content-overlay, transparent);
+}
+
+/* Update banner */
+.mw-update-banner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 20px;
+  background: var(--mw-accent, #2563eb);
+  color: var(--mw-accent-fg, #ffffff);
+  font-family: var(--mw-font-ui, 'Inter', system-ui, sans-serif);
+  font-size: 13px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.mw-update-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mw-update-banner-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  font-weight: 700;
+}
+
+.mw-update-banner-text strong {
+  font-weight: 700;
+}
+
+.mw-update-banner-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.mw-update-banner .mw-btn {
+  background: rgba(255, 255, 255, 0.16);
+  color: inherit;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.mw-update-banner .mw-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+.mw-update-banner .mw-btn-accent {
+  background: var(--mw-accent-fg, #ffffff);
+  color: var(--mw-accent, #2563eb);
+  border-color: transparent;
 }
 
 /* Title bar */

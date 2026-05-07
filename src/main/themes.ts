@@ -18,7 +18,11 @@ const BUILTIN_THEMES: ThemeManifest[] = [
   { id: 'dark-academia', name: 'Dark Academia', description: 'Candlelit oxblood and brass on charred wood.', builtin: true },
   { id: 'pixel-8bit', name: 'Pixel 8-bit', description: 'Game Boy LCD palette and chunky pixel type.', builtin: true },
   { id: 'steampunk', name: 'Steampunk', description: 'Aged paper, brass cogs, vintage typewriter ink.', builtin: true },
-  { id: 'solarpunk', name: 'Solarpunk', description: 'Sun-warm cream, sage, and terracotta botanicals.', builtin: true }
+  { id: 'solarpunk', name: 'Solarpunk', description: 'Sun-warm cream, sage, and terracotta botanicals.', builtin: true },
+  { id: 'risograph', name: 'Risograph', description: 'Off-register fluorescent print-shop overlay.', builtin: true },
+  { id: 'stargazer', name: 'Stargazer', description: 'Quiet night sky with stars and nebula glow.', builtin: true },
+  { id: 'polaroid', name: 'Polaroid', description: 'Sepia photo album with white-bordered snapshots.', builtin: true },
+  { id: 'mission-control', name: 'Mission Control', description: 'NASA-era ivory and orange on deep space blue.', builtin: true }
 ];
 
 export async function listAllThemes(userThemesDir: string): Promise<ThemeManifest[]> {

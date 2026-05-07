@@ -194,6 +194,10 @@ function registerIpc(): void {
   ipcMain.handle(IPC.windowSetTitle, (_e, title: string) => {
     mainWindow?.setTitle(title);
   });
+
+  ipcMain.handle(IPC.updateInstall, () => {
+    autoUpdater.quitAndInstall();
+  });
 }
 
 const gotLock = app.requestSingleInstanceLock();
@@ -222,6 +226,18 @@ if (!gotLock) {
     if (!isDev) {
       autoUpdater.autoDownload = true;
       autoUpdater.autoInstallOnAppQuit = true;
+
+      autoUpdater.on('update-downloaded', (info) => {
+        mainWindow?.webContents.send('update:downloaded', {
+          version: info.version,
+          releaseNotes: typeof info.releaseNotes === 'string' ? info.releaseNotes : undefined
+        });
+      });
+
+      autoUpdater.on('error', (err) => {
+        console.warn('Auto-updater error:', err?.message ?? err);
+      });
+
       autoUpdater.checkForUpdatesAndNotify().catch((err) => {
         console.warn('Auto-update check failed:', err?.message ?? err);
       });

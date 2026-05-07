@@ -28,8 +28,16 @@ export const IPC = {
   settingsSet: 'settings:set',
 
   // window
-  windowSetTitle: 'window:setTitle'
+  windowSetTitle: 'window:setTitle',
+
+  // updates
+  updateInstall: 'update:install'
 } as const;
+
+export type UpdateInfo = {
+  version: string;
+  releaseNotes?: string;
+};
 
 export type Settings = {
   themeId: string;

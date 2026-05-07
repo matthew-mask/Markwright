@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { IPC, type Settings, type ThemeManifest, type LoadedFile } from '../shared/ipc';
+import { IPC, type Settings, type ThemeManifest, type LoadedFile, type UpdateInfo } from '../shared/ipc';
 
 const api = {
   openFileDialog: (): Promise<LoadedFile | null> => ipcRenderer.invoke(IPC.fileOpenDialog),
@@ -18,7 +18,12 @@ const api = {
 
   onExternalFileOpen: (cb: (filePath: string) => void) => {
     ipcRenderer.on('file:openExternal', (_e, filePath: string) => cb(filePath));
-  }
+  },
+
+  onUpdateDownloaded: (cb: (info: UpdateInfo) => void) => {
+    ipcRenderer.on('update:downloaded', (_e, info: UpdateInfo) => cb(info));
+  },
+  installUpdate: () => ipcRenderer.invoke(IPC.updateInstall)
 };
 
 contextBridge.exposeInMainWorld('markwright', api);

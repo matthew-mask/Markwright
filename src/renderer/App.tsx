@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { ThemeManifest } from '../shared/ipc';
+import type { ThemeManifest, UpdateInfo } from '../shared/ipc';
 import { Editor } from './components/Editor';
 import { TitleBar } from './components/TitleBar';
 import { ThemePicker } from './components/ThemePicker';
+import { UpdateBanner } from './components/UpdateBanner';
 import { useTheme } from './hooks/useTheme';
 
 type DocState = {
@@ -42,12 +43,14 @@ export default function App(): JSX.Element {
     liveContent: DEFAULT_DOC
   });
   const [showThemePicker, setShowThemePicker] = useState(false);
+  const [pendingUpdate, setPendingUpdate] = useState<UpdateInfo | null>(null);
   const { themeId, setThemeId } = useTheme();
   const docRef = useRef(doc);
   docRef.current = doc;
 
   useEffect(() => {
     void window.markwright.listThemes().then(setThemes);
+    window.markwright.onUpdateDownloaded((info) => setPendingUpdate(info));
   }, []);
 
   useEffect(() => {
@@ -141,6 +144,13 @@ export default function App(): JSX.Element {
         onSave={saveFile}
         onTogglePicker={() => setShowThemePicker((s) => !s)}
       />
+      {pendingUpdate && (
+        <UpdateBanner
+          version={pendingUpdate.version}
+          onInstall={() => window.markwright.installUpdate()}
+          onDismiss={() => setPendingUpdate(null)}
+        />
+      )}
       <main className="mw-main">
         <Editor key={doc.filePath ?? 'new'} initialMarkdown={doc.initialContent} onChange={handleChange} />
       </main>

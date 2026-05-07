@@ -8,6 +8,10 @@
 !include "StrFunc.nsh"
 ${StrStr}
 
+; StrFunc emits its install-scope helper into the uninstaller too, where it's
+; unused and triggers warning 6010. electron-builder treats warnings as errors.
+!pragma warning disable 6010
+
 !macro customInstall
   ; --- 1. CLI shim ---
   CopyFiles /SILENT "$INSTDIR\resources\mw.cmd" "$INSTDIR\mw.cmd"

@@ -1,0 +1,168 @@
+/* === Mission Control ===
+   Apollo-era aerospace: ivory + NASA orange + deep space blue. */
+[data-theme="mission-control"] {
+  --mw-font-body: 'IBM Plex Sans', sans-serif;
+  --mw-font-display: 'IBM Plex Mono', monospace;
+  --mw-font-ui: 'IBM Plex Mono', monospace;
+  --mw-font-mono: 'IBM Plex Mono', monospace;
+
+  --mw-bg: #0b1530;
+  --mw-fg: #f0ead6;
+  --mw-fg-strong: #ffffff;
+  --mw-fg-muted: rgba(240, 234, 214, 0.65);
+
+  --mw-accent: #ff5f1f;
+  --mw-accent-fg: #0b1530;
+
+  --mw-link: #ffb347;
+  --mw-link-decoration: underline;
+
+  --mw-line-height: 1.7;
+  --mw-body-size: 16px;
+
+  --mw-heading-weight: 700;
+  --mw-heading-tracking: 0.06em;
+
+  --mw-titlebar-bg: rgba(11, 21, 48, 0.9);
+  --mw-titlebar-border: 1px solid rgba(255, 95, 31, 0.5);
+
+  --mw-btn-bg: transparent;
+  --mw-btn-bg-hover: rgba(255, 95, 31, 0.15);
+  --mw-btn-border: 1px solid rgba(255, 95, 31, 0.55);
+  --mw-btn-radius: 0;
+
+  --mw-code-bg: rgba(255, 95, 31, 0.12);
+  --mw-codeblock-bg: rgba(0, 0, 0, 0.4);
+  --mw-codeblock-border: 1px solid rgba(255, 95, 31, 0.35);
+  --mw-codeblock-radius: 0;
+  --mw-codeblock-fg: #ffb347;
+
+  --mw-quote-border: 3px solid #ff5f1f;
+  --mw-quote-bg: rgba(255, 95, 31, 0.08);
+  --mw-quote-fg: #f0ead6;
+  --mw-quote-style: normal;
+  --mw-quote-padding: 0.6em 1em;
+
+  --mw-rule: rgba(255, 95, 31, 0.5);
+  --mw-selection: rgba(255, 95, 31, 0.32);
+  --mw-table-border: 1px solid rgba(255, 95, 31, 0.4);
+  --mw-table-head-bg: rgba(255, 95, 31, 0.18);
+
+  --mw-modal-bg: rgba(11, 21, 48, 0.96);
+  --mw-modal-border: 1px solid rgba(255, 95, 31, 0.5);
+  --mw-modal-radius: 0;
+  --mw-modal-backdrop: rgba(0, 0, 0, 0.8);
+
+  --mw-decoration-opacity: 0.55;
+  --mw-content-overlay: linear-gradient(180deg, rgba(11, 21, 48, 0.35), rgba(11, 21, 48, 0.5));
+}
+
+/* Subtle CRT scanlines + faint orbital arc */
+[data-theme="mission-control"] .mw-bg-decoration {
+  display: block;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(240, 234, 214, 0.04) 0, rgba(240, 234, 214, 0.04) 1px, transparent 1px, transparent 4px),
+    radial-gradient(circle 700px at 100% 100%, rgba(255, 95, 31, 0.18), transparent 70%),
+    radial-gradient(circle 600px at 0% 0%, rgba(95, 158, 255, 0.12), transparent 65%);
+}
+
+/* Faint mission-patch ring at top right */
+[data-theme="mission-control"] .mw-bg-decoration::after {
+  content: '';
+  position: absolute;
+  top: 80px; right: 6%;
+  width: 240px; height: 240px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='none' stroke='%23ff5f1f' stroke-width='1.4' opacity='0.45'><circle cx='50' cy='50' r='42'/><circle cx='50' cy='50' r='34' stroke-dasharray='2 3'/><circle cx='50' cy='50' r='10'/><line x1='8' y1='50' x2='18' y2='50'/><line x1='82' y1='50' x2='92' y2='50'/><line x1='50' y1='8' x2='50' y2='18'/><line x1='50' y1='82' x2='50' y2='92'/></g><text x='50' y='53' text-anchor='middle' font-family='monospace' font-size='6' fill='%23ff5f1f' opacity='0.55'>APOLLO</text></svg>") center / contain no-repeat;
+  pointer-events: none;
+}
+
+[data-theme="mission-control"] .mw-titlebar .mw-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #ff5f1f;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+[data-theme="mission-control"] .mw-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  color: #ff5f1f;
+}
+[data-theme="mission-control"] .mw-btn-accent { background: #ff5f1f; color: #0b1530; border-color: #ff5f1f; }
+
+/* Headings: monospace mission log labels */
+[data-theme="mission-control"] .ProseMirror h1 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.9em;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+  border-top: 1px solid rgba(255, 95, 31, 0.4);
+  border-bottom: 1px solid rgba(255, 95, 31, 0.4);
+  padding: 0.3em 0;
+  margin-bottom: 0.6em;
+}
+[data-theme="mission-control"] .ProseMirror h1::before {
+  content: '\25B8 MISSION  ';
+  color: #ff5f1f;
+}
+
+[data-theme="mission-control"] .ProseMirror h2 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.2em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ff5f1f;
+}
+[data-theme="mission-control"] .ProseMirror h2::before {
+  content: '\2014  ';
+  color: rgba(255, 95, 31, 0.6);
+}
+
+[data-theme="mission-control"] .ProseMirror h3 {
+  font-family: 'IBM Plex Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #ffb347;
+  font-size: 1em;
+}
+
+[data-theme="mission-control"] .ProseMirror strong {
+  color: #ffb347;
+  font-weight: 700;
+}
+
+[data-theme="mission-control"] .ProseMirror hr {
+  border: 0;
+  height: 0;
+  border-top: 1px dashed rgba(255, 95, 31, 0.6);
+  margin: 2em 0;
+}
+
+[data-theme="mission-control"] .ProseMirror table th {
+  font-family: 'IBM Plex Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #ff5f1f;
+  font-size: 0.85em;
+}
+
+.mw-theme-preview[data-theme="mission-control"] {
+  background:
+    repeating-linear-gradient(0deg, rgba(240, 234, 214, 0.05) 0, rgba(240, 234, 214, 0.05) 1px, transparent 1px, transparent 3px),
+    radial-gradient(circle at 80% 20%, rgba(255, 95, 31, 0.35), transparent 60%),
+    #0b1530;
+  color: #ff5f1f;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.mw-theme-preview[data-theme="mission-control"] .mw-theme-preview-h1 {
+  font-family: 'IBM Plex Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  font-size: 18px;
+}
