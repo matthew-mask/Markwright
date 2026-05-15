@@ -1,5 +1,6 @@
-import { EditorContent, useEditor } from '@tiptap/react';
+import { EditorContent, ReactNodeViewRenderer, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import CodeBlock from '@tiptap/extension-code-block';
 import Placeholder from '@tiptap/extension-placeholder';
 import Link from '@tiptap/extension-link';
 import TaskList from '@tiptap/extension-task-list';
@@ -12,6 +13,7 @@ import Typography from '@tiptap/extension-typography';
 import { Markdown } from 'tiptap-markdown';
 import { useEffect } from 'react';
 import { SlashCommands } from '../extensions/SlashCommands';
+import { MermaidCodeBlockView } from './MermaidCodeBlockView';
 
 type Props = {
   initialMarkdown: string;
@@ -23,8 +25,13 @@ export function Editor({ initialMarkdown, onChange }: Props): JSX.Element {
     extensions: [
       StarterKit.configure({
         heading: { levels: [1, 2, 3, 4, 5, 6] },
-        codeBlock: { HTMLAttributes: { class: 'mw-code-block' } }
+        codeBlock: false
       }),
+      CodeBlock.extend({
+        addNodeView() {
+          return ReactNodeViewRenderer(MermaidCodeBlockView);
+        }
+      }).configure({ HTMLAttributes: { class: 'mw-code-block' } }),
       Placeholder.configure({ placeholder: 'Start writing…' }),
       Link.configure({ openOnClick: true, autolink: true, linkOnPaste: true, HTMLAttributes: { rel: 'noopener noreferrer' } }),
       TaskList,

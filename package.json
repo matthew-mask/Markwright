@@ -1,6 +1,6 @@
 {
   "name": "markwright",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Markwright — themed markdown editor",
   "main": "out/main/index.js",
   "author": "Matthew Mask",
@@ -19,6 +19,7 @@
     "package:dir": "npm run make-ico && electron-vite build && electron-builder --win --x64 --dir"
   },
   "dependencies": {
+    "@tiptap/extension-code-block": "^2.10.3",
     "@tiptap/extension-code-block-lowlight": "^2.10.3",
     "@tiptap/extension-link": "^2.10.3",
     "@tiptap/extension-placeholder": "^2.10.3",
@@ -35,6 +36,7 @@
     "@tiptap/suggestion": "^2.10.3",
     "electron-updater": "^6.8.3",
     "lowlight": "^3.3.0",
+    "mermaid": "^11.15.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tippy.js": "^6.3.7",
