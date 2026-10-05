@@ -26,4 +26,5 @@ After opening, briefly confirm: "Opened `<filename>` in Markwright." Do **not** 
 ## Notes
 
 - Markwright is a desktop app — the open command returns immediately while the window stays up. Don't wait on it.
+- Markwright shows edits to an open file live and autosaves the user's own typing. So if you change a file that's open in Markwright, the user sees it immediately — no need to reopen it. If an `Edit` fails because the file changed since you read it, the user has probably been typing in Markwright; re-read the file and retry.
 - If the user has Markwright open already, the new file replaces the current document in the existing window (single-instance lock).

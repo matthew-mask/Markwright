@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ThemeManifest, UpdateInfo } from '../shared/ipc';
 import { AboutDialog } from './components/AboutDialog';
-import { Editor } from './components/Editor';
+import { Editor, type ExternalContent } from './components/Editor';
 import { Sidebar } from './components/Sidebar';
-import { TitleBar } from './components/TitleBar';
+import { TitleBar, type SaveStatus } from './components/TitleBar';
 import { ThemePicker } from './components/ThemePicker';
 import { UpdateBanner } from './components/UpdateBanner';
 import { useTheme } from './hooks/useTheme';
@@ -11,11 +11,19 @@ import { useTheme } from './hooks/useTheme';
 type Tab = {
   id: string;
   filePath: string | null;
+  // What's on disk as far as we know; the baseline `dirty` compares against.
   initialContent: string;
   liveContent: string;
   dirty: boolean;
+  saving: boolean;
+  saveError: boolean;
+  // Set when the file changes outside the app; the Editor swaps it in.
+  external: ExternalContent | null;
   title: string;
 };
+
+// Quiet period after the last keystroke before a file-backed doc is written.
+const AUTOSAVE_DELAY_MS = 400;
 
 const DEFAULT_DOC = `# Welcome to Markwright
 
@@ -50,6 +58,9 @@ const makeUntitledTab = (): Tab => ({
   initialContent: DEFAULT_DOC,
   liveContent: DEFAULT_DOC,
   dirty: false,
+  saving: false,
+  saveError: false,
+  external: null,
   title: 'Untitled'
 });
 
@@ -59,8 +70,23 @@ const makeFileTab = (filePath: string, content: string): Tab => ({
   initialContent: content,
   liveContent: content,
   dirty: false,
+  saving: false,
+  saveError: false,
+  external: null,
   title: titleForPath(filePath)
 });
+
+const saveStatusFor = (tab: Tab): SaveStatus | null => {
+  if (!tab.filePath) return tab.dirty ? 'unsaved' : null;
+  if (tab.saveError) return 'error';
+  return tab.dirty || tab.saving ? 'saving' : 'saved';
+};
+
+// Autosave makes a pending write invisible; only flag docs that need the user.
+const needsAttention = (tab: Tab): boolean => {
+  const status = saveStatusFor(tab);
+  return status === 'unsaved' || status === 'error';
+};
 
 export default function App(): JSX.Element {
   const [themes, setThemes] = useState<ThemeManifest[]>([]);
@@ -76,6 +102,12 @@ export default function App(): JSX.Element {
   const activeIdRef = useRef(activeTabId);
   activeIdRef.current = activeTabId;
   const mainRef = useRef<HTMLElement>(null);
+
+  // Autosave bookkeeping lives in refs, not tab state, so a disk change can
+  // cancel a pending write synchronously instead of waiting for a render.
+  const pendingWrites = useRef(new Map<string, string>());
+  const saveTimers = useRef(new Map<string, number>());
+  const saveChains = useRef(new Map<string, Promise<boolean>>());
 
   const activeTab = tabs.find((t) => t.id === activeTabId) ?? tabs[0];
 
@@ -119,15 +151,101 @@ export default function App(): JSX.Element {
   }, [openOrFocusFileTab]);
 
   // Window title reflects active tab.
+  const activeNeedsAttention = needsAttention(activeTab);
   useEffect(() => {
-    const title = `${activeTab.dirty ? '● ' : ''}${activeTab.title} — Markwright`;
+    const title = `${activeNeedsAttention ? '● ' : ''}${activeTab.title} — Markwright`;
     void window.markwright.setWindowTitle(title);
-  }, [activeTab.title, activeTab.dirty]);
+  }, [activeTab.title, activeNeedsAttention]);
+
+  // Keep main's watch list in sync with the files open in tabs.
+  const watchedKey = tabs.flatMap((t) => (t.filePath ? [t.filePath] : [])).join('\n');
+  useEffect(() => {
+    void window.markwright.setWatchedFiles(watchedKey ? watchedKey.split('\n') : []);
+  }, [watchedKey]);
 
   // Reset scroll to top when active tab changes (or when the doc switches).
   useEffect(() => {
     if (mainRef.current) mainRef.current.scrollTop = 0;
   }, [activeTabId]);
+
+  // ---- autosave -------------------------------------------------------------
+
+  const cancelAutosave = useCallback((tabId: string) => {
+    clearTimeout(saveTimers.current.get(tabId));
+    saveTimers.current.delete(tabId);
+    pendingWrites.current.delete(tabId);
+  }, []);
+
+  // Write the tab's pending edit, if any. Resolves false only if the write failed.
+  const writeTab = useCallback((tabId: string): Promise<boolean> => {
+    clearTimeout(saveTimers.current.get(tabId));
+    saveTimers.current.delete(tabId);
+    // Chain per tab so writes land in the order they were made.
+    const run = (saveChains.current.get(tabId) ?? Promise.resolve(true)).then(async () => {
+      const filePath = tabsRef.current.find((t) => t.id === tabId)?.filePath;
+      const content = pendingWrites.current.get(tabId);
+      if (!filePath || content === undefined) return true;
+      pendingWrites.current.delete(tabId);
+      setTabs((prev) => prev.map((t) => (t.id === tabId ? { ...t, saving: true } : t)));
+      try {
+        const result = await window.markwright.save(filePath, content);
+        setTabs((prev) =>
+          prev.map((t) => {
+            if (t.id !== tabId) return t;
+            // On conflict the disk version is already on its way in via onFileChangedOnDisk.
+            if (!result.ok) return { ...t, saving: false };
+            return { ...t, saving: false, saveError: false, initialContent: content, dirty: t.liveContent !== content };
+          })
+        );
+        return true;
+      } catch {
+        setTabs((prev) => prev.map((t) => (t.id === tabId ? { ...t, saving: false, saveError: true } : t)));
+        return false;
+      }
+    });
+    saveChains.current.set(tabId, run);
+    return run;
+  }, []);
+
+  // Write now rather than after the quiet period (Ctrl+S, closing, quitting).
+  // Also retries a failed save, whose edit is no longer pending.
+  const flushTab = useCallback(
+    (tabId: string): Promise<boolean> => {
+      const tab = tabsRef.current.find((t) => t.id === tabId);
+      if (tab?.filePath && tab.dirty && !pendingWrites.current.has(tabId)) {
+        pendingWrites.current.set(tabId, tab.liveContent);
+      }
+      return writeTab(tabId);
+    },
+    [writeTab]
+  );
+
+  // The file changed outside the app (an AI agent, another editor). Disk wins:
+  // drop any edit we hadn't written yet and show what's there now.
+  useEffect(
+    () =>
+      window.markwright.onFileChangedOnDisk(({ path, content }) => {
+        const tab = tabsRef.current.find((t) => t.filePath === path);
+        if (!tab) return;
+        cancelAutosave(tab.id);
+        setTabs((prev) =>
+          prev.map((t) => {
+            if (t.id !== tab.id) return t;
+            if (content === t.liveContent) return { ...t, initialContent: content, dirty: false, saveError: false };
+            return { ...t, saveError: false, external: { markdown: content, rev: (t.external?.rev ?? 0) + 1 } };
+          })
+        );
+      }),
+    [cancelAutosave]
+  );
+
+  useEffect(
+    () =>
+      window.markwright.onFlushRequest(async () => {
+        await Promise.all(tabsRef.current.map((t) => flushTab(t.id)));
+      }),
+    [flushTab]
+  );
 
   // ---- editor change → tab state -------------------------------------------
 
@@ -142,8 +260,15 @@ export default function App(): JSX.Element {
           return { ...t, liveContent: markdown, dirty: markdown !== t.initialContent };
         })
       );
+      if (isInitial) return;
+      const tab = tabsRef.current.find((t) => t.id === tabId);
+      if (!tab?.filePath) return;
+      if (!pendingWrites.current.has(tabId) && markdown === tab.initialContent) return;
+      pendingWrites.current.set(tabId, markdown);
+      clearTimeout(saveTimers.current.get(tabId));
+      saveTimers.current.set(tabId, window.setTimeout(() => void writeTab(tabId), AUTOSAVE_DELAY_MS));
     },
-    []
+    [writeTab]
   );
 
   // ---- file commands --------------------------------------------------------
@@ -153,43 +278,40 @@ export default function App(): JSX.Element {
     if (file?.path) openOrFocusFileTab({ path: file.path, content: file.content });
   }, [openOrFocusFileTab]);
 
-  const saveTab = useCallback(async (tabId: string): Promise<boolean> => {
-    const tab = tabsRef.current.find((t) => t.id === tabId);
-    if (!tab) return false;
-    if (tab.filePath) {
-      await window.markwright.save(tab.filePath, tab.liveContent);
+  const saveAs = useCallback(
+    async (tabId: string): Promise<boolean> => {
+      const tab = tabsRef.current.find((t) => t.id === tabId);
+      if (!tab) return false;
+      const newPath = await window.markwright.saveAsDialog(tab.liveContent);
+      if (!newPath) return false;
+      cancelAutosave(tabId);
       setTabs((prev) =>
-        prev.map((t) => (t.id === tabId ? { ...t, initialContent: t.liveContent, dirty: false } : t))
+        prev.map((t) =>
+          t.id === tabId
+            ? {
+                ...t,
+                filePath: newPath,
+                initialContent: t.liveContent,
+                dirty: false,
+                saveError: false,
+                title: titleForPath(newPath)
+              }
+            : t
+        )
       );
       return true;
-    }
-    const newPath = await window.markwright.saveAsDialog(tab.liveContent);
-    if (!newPath) return false;
-    setTabs((prev) =>
-      prev.map((t) =>
-        t.id === tabId
-          ? { ...t, filePath: newPath, initialContent: t.liveContent, dirty: false, title: titleForPath(newPath) }
-          : t
-      )
-    );
-    return true;
-  }, []);
+    },
+    [cancelAutosave]
+  );
 
-  const saveActive = useCallback(() => saveTab(activeIdRef.current), [saveTab]);
-
-  const saveAs = useCallback(async () => {
+  // Ctrl+S: file-backed docs autosave anyway, so this just writes immediately.
+  // Untitled docs have nowhere to go yet, so it asks for a location.
+  const saveActive = useCallback(async () => {
     const tab = tabsRef.current.find((t) => t.id === activeIdRef.current);
     if (!tab) return;
-    const newPath = await window.markwright.saveAsDialog(tab.liveContent);
-    if (!newPath) return;
-    setTabs((prev) =>
-      prev.map((t) =>
-        t.id === tab.id
-          ? { ...t, filePath: newPath, initialContent: t.liveContent, dirty: false, title: titleForPath(newPath) }
-          : t
-      )
-    );
-  }, []);
+    if (tab.filePath) await flushTab(tab.id);
+    else await saveAs(tab.id);
+  }, [flushTab, saveAs]);
 
   // ---- tab commands ---------------------------------------------------------
 
@@ -204,14 +326,19 @@ export default function App(): JSX.Element {
       const tab = tabsRef.current.find((t) => t.id === tabId);
       if (!tab) return;
 
-      if (tab.dirty) {
+      // File-backed docs close without asking once their last edit is on disk.
+      // Only never-saved docs, or ones whose save failed, need a decision.
+      const needsDecision = tab.filePath ? !(await flushTab(tabId)) : tab.dirty;
+      if (needsDecision) {
         const choice = await window.markwright.confirmCloseTab(tab.title);
         if (choice === 'cancel') return;
         if (choice === 'save') {
-          const saved = await saveTab(tabId);
+          const saved = await saveAs(tabId);
           if (!saved) return; // user cancelled the save-as dialog
         }
       }
+      cancelAutosave(tabId);
+      saveChains.current.delete(tabId);
 
       setTabs((prev) => {
         const idx = prev.findIndex((t) => t.id === tabId);
@@ -228,7 +355,7 @@ export default function App(): JSX.Element {
         return next;
       });
     },
-    [saveTab]
+    [flushTab, saveAs, cancelAutosave]
   );
 
   const cycleTab = useCallback((dir: 1 | -1) => {
@@ -281,7 +408,7 @@ export default function App(): JSX.Element {
         void saveActive();
       } else if (e.key === 'S' || (e.key === 's' && e.shiftKey)) {
         e.preventDefault();
-        void saveAs();
+        void saveAs(activeIdRef.current);
       } else if (e.key === 'o') {
         e.preventDefault();
         void openFile();
@@ -310,7 +437,7 @@ export default function App(): JSX.Element {
       <div className="mw-bg-decoration" aria-hidden="true" />
       <TitleBar
         fileName={activeTab.title}
-        dirty={activeTab.dirty}
+        saveStatus={saveStatusFor(activeTab)}
         onOpen={openFile}
         onSave={() => void saveActive()}
         onTogglePicker={() => setShowThemePicker((s) => !s)}
@@ -325,7 +452,7 @@ export default function App(): JSX.Element {
       )}
       <div className="mw-body">
         <Sidebar
-          tabs={tabs.map((t) => ({ id: t.id, title: t.title, dirty: t.dirty }))}
+          tabs={tabs.map((t) => ({ id: t.id, title: t.title, dirty: needsAttention(t) }))}
           activeTabId={activeTabId}
           onSwitch={setActiveTabId}
           onClose={(id) => void closeTab(id)}
@@ -340,6 +467,7 @@ export default function App(): JSX.Element {
             >
               <Editor
                 initialMarkdown={tab.initialContent}
+                external={tab.external}
                 onChange={(md, isInitial) => handleTabChange(tab.id, md, isInitial)}
               />
             </div>

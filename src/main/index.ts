@@ -1,14 +1,140 @@
 import { app, BrowserWindow, ipcMain, dialog, shell, Menu, nativeImage } from 'electron';
-import { promises as fs } from 'node:fs';
+import { promises as fs, watch, type FSWatcher } from 'node:fs';
 import path from 'node:path';
 import { autoUpdater } from 'electron-updater';
-import { IPC, DEFAULT_SETTINGS, type Settings, type ThemeManifest, type LoadedFile } from '../shared/ipc';
+import { IPC, DEFAULT_SETTINGS, type Settings, type ThemeManifest, type LoadedFile, type SaveResult } from '../shared/ipc';
 import { listAllThemes, readThemeCss } from './themes';
 
 const isDev = !app.isPackaged;
 
 let mainWindow: BrowserWindow | null = null;
 let pendingFilePath: string | null = null;
+
+// ---- open-file watching -----------------------------------------------------
+// Open files are watched so edits made elsewhere (an AI agent, another editor)
+// show up live. We watch each file's parent directory rather than the file:
+// many tools save via write-temp-then-rename, which orphans a file-level watcher.
+
+const WATCH_SETTLE_MS = 100;
+
+// Last content we read from or wrote to each open file. A watcher event whose
+// content matches this is our own write echoing back, not an external edit.
+const knownContent = new Map<string, string>();
+// Paths we're writing right now; a read mid-write could see a truncated file.
+const selfWriting = new Set<string>();
+const dirWatchers = new Map<string, { watcher: FSWatcher; files: Set<string> }>();
+const settleTimers = new Map<string, NodeJS.Timeout>();
+
+const sameFileName = (a: string, b: string): boolean =>
+  process.platform === 'win32' ? a.toLowerCase() === b.toLowerCase() : a === b;
+
+async function checkForExternalChange(filePath: string): Promise<void> {
+  if (selfWriting.has(filePath)) return;
+  let content: string;
+  try {
+    content = await fs.readFile(filePath, 'utf8');
+  } catch {
+    return; // mid-rename or deleted; a later event will catch the final state
+  }
+  if (content === knownContent.get(filePath)) return;
+  knownContent.set(filePath, content);
+  mainWindow?.webContents.send(IPC.fileChangedOnDisk, { path: filePath, content });
+}
+
+function onDirEvent(dir: string, fileName: string | null): void {
+  const entry = dirWatchers.get(dir);
+  if (!entry) return;
+  for (const filePath of entry.files) {
+    if (fileName && !sameFileName(path.basename(filePath), fileName)) continue;
+    clearTimeout(settleTimers.get(filePath));
+    settleTimers.set(
+      filePath,
+      setTimeout(() => {
+        settleTimers.delete(filePath);
+        void checkForExternalChange(filePath);
+      }, WATCH_SETTLE_MS)
+    );
+  }
+}
+
+function setWatchedFiles(paths: string[]): void {
+  const wanted = new Set(paths);
+
+  for (const [dir, entry] of dirWatchers) {
+    for (const filePath of entry.files) {
+      if (wanted.has(filePath)) continue;
+      entry.files.delete(filePath);
+      knownContent.delete(filePath);
+    }
+    if (entry.files.size === 0) {
+      entry.watcher.close();
+      dirWatchers.delete(dir);
+    }
+  }
+
+  for (const filePath of wanted) {
+    const dir = path.dirname(filePath);
+    let entry = dirWatchers.get(dir);
+    if (!entry) {
+      try {
+        const watcher = watch(dir, (_event, fileName) => onDirEvent(dir, fileName));
+        watcher.on('error', () => {
+          watcher.close();
+          dirWatchers.delete(dir);
+        });
+        entry = { watcher, files: new Set() };
+        dirWatchers.set(dir, entry);
+      } catch {
+        continue; // directory gone or unreadable; nothing to watch
+      }
+    }
+    if (entry.files.has(filePath)) continue;
+    entry.files.add(filePath);
+    if (!knownContent.has(filePath)) {
+      void fs
+        .readFile(filePath, 'utf8')
+        .then((content) => {
+          if (!knownContent.has(filePath)) knownContent.set(filePath, content);
+        })
+        .catch(() => undefined);
+    }
+  }
+}
+
+async function writeKnown(filePath: string, content: string): Promise<void> {
+  const previous = knownContent.get(filePath);
+  knownContent.set(filePath, content);
+  selfWriting.add(filePath);
+  try {
+    await fs.writeFile(filePath, content, 'utf8');
+  } catch (err) {
+    if (previous === undefined) knownContent.delete(filePath);
+    else knownContent.set(filePath, previous);
+    throw err;
+  } finally {
+    selfWriting.delete(filePath);
+  }
+}
+
+async function readKnown(filePath: string): Promise<string> {
+  const content = await fs.readFile(filePath, 'utf8');
+  knownContent.set(filePath, content);
+  return content;
+}
+
+// Ask the renderer to write any pending autosaves before the window goes away.
+function flushRenderer(win: BrowserWindow, timeoutMs = 2000): Promise<void> {
+  return new Promise((resolve) => {
+    const done = () => {
+      clearTimeout(timer);
+      ipcMain.removeListener(IPC.appFlushDone, done);
+      resolve();
+    };
+    const timer = setTimeout(done, timeoutMs);
+    ipcMain.once(IPC.appFlushDone, done);
+    win.webContents.send(IPC.appFlushRequest);
+  });
+}
 
 function parseFileArg(argv: string[]): string | null {
   const args = argv.slice(isDev ? 2 : 1);
@@ -100,10 +226,19 @@ async function createWindow(): Promise<BrowserWindow> {
 
   win.on('ready-to-show', () => win.show());
 
-  win.on('close', async () => {
-    const current = await loadSettings();
+  let readyToClose = false;
+  win.on('close', (e) => {
+    if (readyToClose) return;
+    e.preventDefault();
     const b = win.getBounds();
-    await saveSettings({ ...current, windowBounds: b });
+    void (async () => {
+      await Promise.all([
+        flushRenderer(win),
+        loadSettings().then((current) => saveSettings({ ...current, windowBounds: b }))
+      ]).catch(() => undefined);
+      readyToClose = true;
+      win.close();
+    })();
   });
 
   win.webContents.setWindowOpenHandler(({ url }) => {
@@ -132,22 +267,37 @@ function registerIpc(): void {
     });
     if (result.canceled || result.filePaths.length === 0) return null;
     const filePath = result.filePaths[0];
-    const content = await fs.readFile(filePath, 'utf8');
+    const content = await readKnown(filePath);
     return { path: filePath, content };
   });
 
   ipcMain.handle(IPC.fileLoadByPath, async (_e, filePath: string): Promise<LoadedFile | null> => {
     try {
-      const content = await fs.readFile(filePath, 'utf8');
+      const content = await readKnown(filePath);
       return { path: filePath, content };
     } catch {
       return null;
     }
   });
 
-  ipcMain.handle(IPC.fileSave, async (_e, payload: { path: string; content: string }) => {
-    await fs.writeFile(payload.path, payload.content, 'utf8');
+  ipcMain.handle(IPC.fileSave, async (_e, payload: { path: string; content: string }): Promise<SaveResult> => {
+    const known = knownContent.get(payload.path);
+    if (known !== undefined) {
+      const onDisk = await fs.readFile(payload.path, 'utf8').catch(() => null);
+      if (onDisk !== null && onDisk !== known) {
+        // Changed underneath us and the watcher hasn't reported it yet. Hand the
+        // new content to the renderer instead of clobbering someone else's edit.
+        knownContent.set(payload.path, onDisk);
+        mainWindow?.webContents.send(IPC.fileChangedOnDisk, { path: payload.path, content: onDisk });
+        return { ok: false, conflict: true };
+      }
+    }
+    await writeKnown(payload.path, payload.content);
     return { ok: true };
+  });
+
+  ipcMain.handle(IPC.fileSetWatched, (_e, paths: string[]) => {
+    setWatchedFiles(paths);
   });
 
   ipcMain.handle(IPC.fileSaveAsDialog, async (_e, content: string): Promise<string | null> => {
@@ -157,14 +307,14 @@ function registerIpc(): void {
       defaultPath: 'untitled.md'
     });
     if (result.canceled || !result.filePath) return null;
-    await fs.writeFile(result.filePath, content, 'utf8');
+    await writeKnown(result.filePath, content);
     return result.filePath;
   });
 
   ipcMain.handle(IPC.fileGetInitial, async (): Promise<LoadedFile | null> => {
     if (!pendingFilePath) return null;
     try {
-      const content = await fs.readFile(pendingFilePath, 'utf8');
+      const content = await readKnown(pendingFilePath);
       const result = { path: pendingFilePath, content };
       pendingFilePath = null;
       return result;

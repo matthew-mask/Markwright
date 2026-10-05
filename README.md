@@ -3,6 +3,7 @@
 A themed markdown editor for people who want their writing surface to feel like *somewhere*.
 
 - **Live WYSIWYG** — markdown becomes styled inline as you type (Tiptap / ProseMirror).
+- **Live documents** — edits autosave as you type, and changes made to the file elsewhere (e.g. by an AI agent) appear in the open tab immediately.
 - **Single-file, fast** — open one `.md` file at a time. Built for "open this for me" workflows.
 - **Eight built-in themes** that go beyond palette swaps:
   Pen & Graph Paper, Blueprint, Glassmorphism, Minimalist, Brutalism, Terminal/CRT, Newspaper, Cyberpunk Neon.
@@ -56,6 +57,6 @@ themes/
 | Shortcut          | Action          |
 |-------------------|-----------------|
 | Ctrl+O            | Open file       |
-| Ctrl+S            | Save            |
+| Ctrl+S            | Save now (files autosave; asks for a location if Untitled) |
 | Ctrl+Shift+S      | Save As         |
 | Ctrl+Shift+P      | Theme picker    |

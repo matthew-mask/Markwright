@@ -1,12 +1,28 @@
 import { contextBridge, ipcRenderer, webUtils } from 'electron';
-import { IPC, type Settings, type ThemeManifest, type LoadedFile, type UpdateInfo, type AppInfo, type CloseTabChoice } from '../shared/ipc';
+import { IPC, type Settings, type ThemeManifest, type LoadedFile, type UpdateInfo, type AppInfo, type CloseTabChoice, type SaveResult, type DiskChange } from '../shared/ipc';
 
 const api = {
   openFileDialog: (): Promise<LoadedFile | null> => ipcRenderer.invoke(IPC.fileOpenDialog),
   loadByPath: (filePath: string): Promise<LoadedFile | null> => ipcRenderer.invoke(IPC.fileLoadByPath, filePath),
-  save: (filePath: string, content: string) => ipcRenderer.invoke(IPC.fileSave, { path: filePath, content }),
+  save: (filePath: string, content: string): Promise<SaveResult> =>
+    ipcRenderer.invoke(IPC.fileSave, { path: filePath, content }),
   saveAsDialog: (content: string): Promise<string | null> => ipcRenderer.invoke(IPC.fileSaveAsDialog, content),
   getInitialFile: (): Promise<LoadedFile | null> => ipcRenderer.invoke(IPC.fileGetInitial),
+
+  // Tell main which open files to watch; it reports edits made outside the app.
+  setWatchedFiles: (paths: string[]) => ipcRenderer.invoke(IPC.fileSetWatched, paths),
+  onFileChangedOnDisk: (cb: (change: DiskChange) => void) => {
+    const listener = (_e: Electron.IpcRendererEvent, change: DiskChange) => cb(change);
+    ipcRenderer.on(IPC.fileChangedOnDisk, listener);
+    return () => void ipcRenderer.removeListener(IPC.fileChangedOnDisk, listener);
+  },
+
+  // Main asks for pending autosaves to be written before the window closes.
+  onFlushRequest: (cb: () => Promise<void>) => {
+    const listener = () => void cb().finally(() => ipcRenderer.send(IPC.appFlushDone));
+    ipcRenderer.on(IPC.appFlushRequest, listener);
+    return () => void ipcRenderer.removeListener(IPC.appFlushRequest, listener);
+  },
 
   listThemes: (): Promise<ThemeManifest[]> => ipcRenderer.invoke(IPC.themesList),
   loadThemeCss: (themeId: string): Promise<string | null> => ipcRenderer.invoke(IPC.themesLoadCss, themeId),

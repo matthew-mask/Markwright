@@ -18,6 +18,8 @@ export const IPC = {
   fileSaveAsDialog: 'file:saveAsDialog',
   fileGetInitial: 'file:getInitial',
   fileLoadByPath: 'file:loadByPath',
+  fileSetWatched: 'file:setWatched',
+  fileChangedOnDisk: 'file:changedOnDisk',
 
   // themes
   themesList: 'themes:list',
@@ -36,10 +38,19 @@ export const IPC = {
   // app info
   appGetInfo: 'app:getInfo',
   appOpenExternal: 'app:openExternal',
+  appFlushRequest: 'app:flushRequest',
+  appFlushDone: 'app:flushDone',
 
   // dialogs
   dialogConfirmCloseTab: 'dialog:confirmCloseTab'
 } as const;
+
+export type SaveResult = { ok: true } | { ok: false; conflict: true };
+
+export type DiskChange = {
+  path: string;
+  content: string;
+};
 
 export type CloseTabChoice = 'save' | 'discard' | 'cancel';
 
