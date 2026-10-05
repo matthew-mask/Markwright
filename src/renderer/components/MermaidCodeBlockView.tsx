@@ -5,17 +5,27 @@ import { useEffect, useState } from 'react';
 let mermaidPromise: Promise<typeof import('mermaid').default> | null = null;
 function loadMermaid() {
   if (!mermaidPromise) {
-    mermaidPromise = import('mermaid').then((mod) => {
-      mod.default.initialize({
-        startOnLoad: false,
-        theme: 'neutral',
-        securityLevel: 'loose',
-        fontFamily: 'inherit'
-      });
-      return mod.default;
-    });
+    mermaidPromise = import('mermaid').then((mod) => mod.default);
   }
   return mermaidPromise;
+}
+
+type MermaidLook = 'classic' | 'handDrawn';
+
+// Themes opt into mermaid's sketchy look in CSS: `--mw-mermaid-look: handDrawn`.
+const themeMermaidLook = (): MermaidLook =>
+  getComputedStyle(document.documentElement).getPropertyValue('--mw-mermaid-look').trim() === 'handDrawn'
+    ? 'handDrawn'
+    : 'classic';
+
+function useMermaidLook(): MermaidLook {
+  const [look, setLook] = useState(themeMermaidLook);
+  useEffect(() => {
+    const observer = new MutationObserver(() => setLook(themeMermaidLook()));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
+  return look;
 }
 
 let renderCounter = 0;
@@ -27,6 +37,7 @@ export function MermaidCodeBlockView({ node }: NodeViewProps): JSX.Element {
   const [mode, setMode] = useState<'preview' | 'source'>('preview');
   const [svg, setSvg] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const look = useMermaidLook();
 
   useEffect(() => {
     if (!isMermaid || mode !== 'preview') return;
@@ -40,6 +51,15 @@ export function MermaidCodeBlockView({ node }: NodeViewProps): JSX.Element {
     void loadMermaid().then(async (mermaid) => {
       const id = `mw-mermaid-${++renderCounter}`;
       try {
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: 'neutral',
+          securityLevel: 'loose',
+          fontFamily: 'inherit',
+          look,
+          // Fixed seed so a hand-drawn diagram doesn't re-wobble on every edit.
+          handDrawnSeed: 1
+        });
         const result = await mermaid.render(id, trimmed);
         if (!cancelled) {
           setSvg(result.svg);
@@ -55,7 +75,7 @@ export function MermaidCodeBlockView({ node }: NodeViewProps): JSX.Element {
     return () => {
       cancelled = true;
     };
-  }, [source, isMermaid, mode]);
+  }, [source, isMermaid, mode, look]);
 
   // Non-mermaid code blocks: render plain.
   if (!isMermaid) {

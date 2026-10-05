@@ -6,6 +6,7 @@ import { IPC, DEFAULT_SETTINGS, type Settings, type ThemeManifest, type LoadedFi
 import { listAllThemes, readThemeCss } from './themes';
 
 const isDev = !app.isPackaged;
+const UPDATE_CHECK_INTERVAL_MS = 60 * 60 * 1000;
 
 let mainWindow: BrowserWindow | null = null;
 let pendingFilePath: string | null = null;
@@ -360,7 +361,7 @@ function registerIpc(): void {
     return {
       name: 'Markwright',
       version: app.getVersion(),
-      description: 'A themed Electron markdown viewer/editor with live WYSIWYG and 20 fully-designed visual themes.',
+      description: 'A themed Electron markdown viewer/editor with live WYSIWYG and 21 fully-designed visual themes.',
       homepageUrl: 'https://github.com/matthew-mask/Markwright',
       releasesUrl: 'https://github.com/matthew-mask/Markwright/releases',
       issuesUrl: 'https://github.com/matthew-mask/Markwright/issues',
@@ -415,7 +416,17 @@ if (!gotLock) {
       autoUpdater.autoDownload = true;
       autoUpdater.autoInstallOnAppQuit = true;
 
+      const checkForUpdates = () =>
+        autoUpdater.checkForUpdatesAndNotify().catch((err) => {
+          console.warn('Auto-update check failed:', err?.message ?? err);
+        });
+      // The app tends to stay open for days, so keep checking rather than
+      // only at launch; otherwise a new release goes unnoticed until restart.
+      const updateTimer = setInterval(checkForUpdates, UPDATE_CHECK_INTERVAL_MS);
+
       autoUpdater.on('update-downloaded', (info) => {
+        // Nothing more to fetch until the user restarts into it.
+        clearInterval(updateTimer);
         mainWindow?.webContents.send('update:downloaded', {
           version: info.version,
           releaseNotes: typeof info.releaseNotes === 'string' ? info.releaseNotes : undefined
@@ -426,9 +437,7 @@ if (!gotLock) {
         console.warn('Auto-updater error:', err?.message ?? err);
       });
 
-      autoUpdater.checkForUpdatesAndNotify().catch((err) => {
-        console.warn('Auto-update check failed:', err?.message ?? err);
-      });
+      void checkForUpdates();
     }
 
     app.on('activate', async () => {

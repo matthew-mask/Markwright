@@ -22,7 +22,8 @@ const BUILTIN_THEMES: ThemeManifest[] = [
   { id: 'risograph', name: 'Risograph', description: 'Off-register fluorescent print-shop overlay.', builtin: true },
   { id: 'stargazer', name: 'Stargazer', description: 'Quiet night sky with stars and nebula glow.', builtin: true },
   { id: 'polaroid', name: 'Polaroid', description: 'Sepia photo album with white-bordered snapshots.', builtin: true },
-  { id: 'mission-control', name: 'Mission Control', description: 'NASA-era ivory and orange on deep space blue.', builtin: true }
+  { id: 'mission-control', name: 'Mission Control', description: 'NASA-era ivory and orange on deep space blue.', builtin: true },
+  { id: 'whiteboard', name: 'Whiteboard', description: 'Faintly erased board, classic marker colors.', builtin: true }
 ];
 
 export async function listAllThemes(userThemesDir: string): Promise<ThemeManifest[]> {
