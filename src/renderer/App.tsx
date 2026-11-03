@@ -6,6 +6,7 @@ import { Sidebar } from './components/Sidebar';
 import { TitleBar, type SaveStatus } from './components/TitleBar';
 import { ThemePicker } from './components/ThemePicker';
 import { UpdateBanner } from './components/UpdateBanner';
+import { useLayout } from './hooks/useLayout';
 import { useTheme } from './hooks/useTheme';
 
 type Tab = {
@@ -96,6 +97,7 @@ export default function App(): JSX.Element {
   const [showAbout, setShowAbout] = useState(false);
   const [pendingUpdate, setPendingUpdate] = useState<UpdateInfo | null>(null);
   const { themeId, setThemeId } = useTheme();
+  const { sidebarCollapsed, toggleSidebar, contentWidth, toggleContentWidth } = useLayout();
 
   const tabsRef = useRef(tabs);
   tabsRef.current = tabs;
@@ -424,11 +426,14 @@ export default function App(): JSX.Element {
       } else if (e.key === 'p' && e.shiftKey) {
         e.preventDefault();
         setShowThemePicker((s) => !s);
+      } else if (e.key === '\\') {
+        e.preventDefault();
+        toggleSidebar();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [saveActive, saveAs, openFile, newTab, closeTab, cycleTab]);
+  }, [saveActive, saveAs, openFile, newTab, closeTab, cycleTab, toggleSidebar]);
 
   // ---- render ---------------------------------------------------------------
 
@@ -438,9 +443,13 @@ export default function App(): JSX.Element {
       <TitleBar
         fileName={activeTab.title}
         saveStatus={saveStatusFor(activeTab)}
+        sidebarCollapsed={sidebarCollapsed}
+        contentWidth={contentWidth}
         onOpen={openFile}
         onSave={() => void saveActive()}
         onTogglePicker={() => setShowThemePicker((s) => !s)}
+        onToggleSidebar={toggleSidebar}
+        onToggleContentWidth={toggleContentWidth}
         onAbout={() => setShowAbout(true)}
       />
       {pendingUpdate && (
@@ -450,14 +459,16 @@ export default function App(): JSX.Element {
           onDismiss={() => setPendingUpdate(null)}
         />
       )}
-      <div className="mw-body">
-        <Sidebar
-          tabs={tabs.map((t) => ({ id: t.id, title: t.title, dirty: needsAttention(t) }))}
-          activeTabId={activeTabId}
-          onSwitch={setActiveTabId}
-          onClose={(id) => void closeTab(id)}
-          onNew={newTab}
-        />
+      <div className={`mw-body mw-width-${contentWidth}${sidebarCollapsed ? ' mw-sidebar-collapsed' : ''}`}>
+        {!sidebarCollapsed && (
+          <Sidebar
+            tabs={tabs.map((t) => ({ id: t.id, title: t.title, dirty: needsAttention(t) }))}
+            activeTabId={activeTabId}
+            onSwitch={setActiveTabId}
+            onClose={(id) => void closeTab(id)}
+            onNew={newTab}
+          />
+        )}
         <main className="mw-main" ref={mainRef}>
           {tabs.map((tab) => (
             <div

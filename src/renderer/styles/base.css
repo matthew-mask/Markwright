@@ -183,6 +183,7 @@ body {
 }
 
 .mw-btn-icon {
+  position: relative;
   width: 28px;
   height: 28px;
   padding: 0;
@@ -194,6 +195,16 @@ body {
   font-weight: 700;
   font-size: 14px;
   line-height: 1;
+}
+
+/* Centered on the whole button rather than its content box: .mw-btn's padding
+   (and some themes') wins over the padding: 0 above and would push it right. */
+.mw-btn-icon svg {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 16px;
+  height: 16px;
 }
 
 .mw-btn {
@@ -231,8 +242,14 @@ body {
 .mw-body {
   position: relative;
   z-index: 1;
+  /* Always the 1fr row, even when there's no update banner above it. */
+  grid-row: 3;
   overflow: hidden;
   min-height: 0;
+  /* Both resolve against .mw-body's width: the sidebar's own width, and
+     .mw-main's padding (percentages of its containing block). */
+  --mw-sidebar-width: 15%;
+  --mw-readable-width: 66.667%;
 }
 
 .mw-sidebar {
@@ -240,7 +257,7 @@ body {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 15%;
+  width: var(--mw-sidebar-width);
   min-width: 0;
   z-index: 2;
   overflow-y: auto;
@@ -373,12 +390,21 @@ body {
   color: var(--mw-fg, currentColor);
 }
 
+/* Readable width: a centered column; the sidebar fits in its left gutter. */
 .mw-main {
   position: relative;
   z-index: 1;
   height: 100%;
   overflow: auto;
-  padding: 48px 15%;
+  padding: 48px calc((100% - var(--mw-readable-width)) / 2);
+}
+
+/* Full width: edge to edge, clearing the sidebar while it's open. */
+.mw-width-full .mw-main {
+  padding: 48px 48px 48px calc(var(--mw-sidebar-width) + 48px);
+}
+.mw-width-full.mw-sidebar-collapsed .mw-main {
+  padding-left: 48px;
 }
 
 .mw-editor-wrap {

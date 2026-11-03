@@ -69,11 +69,18 @@ export type AppInfo = {
   buildDate: string | null;
 };
 
+// 'readable' is a centered column; 'full' runs to the window edges.
+export type ContentWidth = 'readable' | 'full';
+
 export type Settings = {
   themeId: string;
+  sidebarCollapsed: boolean;
+  contentWidth: ContentWidth;
   windowBounds?: { x: number; y: number; width: number; height: number };
 };
 
 export const DEFAULT_SETTINGS: Settings = {
-  themeId: 'minimalist'
+  themeId: 'minimalist',
+  sidebarCollapsed: false,
+  contentWidth: 'readable'
 };
